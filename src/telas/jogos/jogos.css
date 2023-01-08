@@ -1,8 +1,8 @@
 .jogos {
     display: flex;
-    overflow-block:scroll;
+    overflow-block: scroll;
     margin-top: 1vh;
-    height:89vh;
+    height: 89vh;
     width: 100vw;
     background-color: #222222;
     color: white;
@@ -85,6 +85,7 @@ textarea {
 }
 
 #foda {
+    max-width: 35vw;
     display: flex;
     align-items: center;
 }
@@ -101,6 +102,11 @@ textarea {
     font-size: 2vh;
 }
 
+.flex{
+    max-height: 1vh;
+    display: flex;
+}
+
 .selecionado {
     color: rgb(255, 252, 81);
 }
@@ -109,17 +115,27 @@ textarea {
     color: white;
 }
 
+@media only screen and (max-width: 700px) {
+
+    h5 {
+        font-size: 3vh;
+        margin-left: 2vh;
+    }
+}
+
 h5 {
+    margin-top: 0px;
+    overflow-wrap: break-word;
     font-size: 2vh;
     margin-left: 2vh;
 }
 
-h4{
+h4 {
     font-size: 2.4vh;
 }
 
-h1{
-    
+h1 {
+
     font-size: 5vh;
 }
 

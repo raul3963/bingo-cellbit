@@ -7,7 +7,7 @@ import '../../models/bingo/celula.css'
 function Jogos() {
 
 
-  
+
   const [x3, setx3] = useState(false);
   const [x4, setx4] = useState(false);
   const [x5, setx5] = useState(false);
@@ -176,15 +176,16 @@ function Jogos() {
         <h1>Bingo</h1>
         <div id="foda">
           <h4>Conteudo do bingo, 1 linha = 1 quadrado.<br /> proporção modificada automaticamente <br />
-
           </h4>
-          <h5 className={classe == "x4" ? "selecionado" : "naosel"}>4x4 </h5>
-          <h5 className={classe == "x5" ? "selecionado" : "naosel"}>5x5 </h5>
-          <h5 className={classe == "x6" ? "selecionado" : "naosel"}>6x6 </h5>
 
           <button id="btnAplicar" onClick={aplicar}>Aplicar</button>
         </div>
         <textarea id='inputBingo' />
+        <div className='flex'>
+          <h5 className={classe == "x4" ? "selecionado" : "naosel"}>4x4 </h5>
+          <h5 className={classe == "x5" ? "selecionado" : "naosel"}>5x5 </h5>
+          <h5 className={classe == "x6" ? "selecionado" : "naosel"}>6x6 </h5>
+        </div>
       </div>
 
       <button id="btnHide" onClick={hideshow}>Esconder UI</button>

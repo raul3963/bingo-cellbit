@@ -1,0 +1,166 @@
+.jogos {
+    display: flex;
+    overflow-block:scroll;
+    margin-top: 1vh;
+    height:89vh;
+    width: 100vw;
+    background-color: #222222;
+    color: white;
+}
+
+
+textarea {
+    font-size: 2.5vh;
+    height: 50vh;
+    width: 42vw;
+    background-color: #535353;
+    border: 0.1vh solid rgb(0, 0, 0);
+    border-radius: 2vh;
+    margin: 1vh;
+    resize: none;
+    color: rgb(255, 255, 255);
+}
+
+#lista {
+    position: absolute;
+    top: 10vh;
+    right: 2vw;
+    width: 42vw;
+    height: 60vh;
+}
+
+#bingo {
+    overflow-wrap: normal;
+    display: flex;
+    flex-flow: wrap;
+    grid-column: initial;
+    align-content: center;
+    justify-content: center;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+}
+
+.x4divc {
+    display: flex;
+    flex-flow: wrap;
+    grid-column: initial;
+    position: inherit;
+    left: 5vw;
+    top: 15vh;
+    max-height: 450px;
+    max-width: 450px;
+}
+
+.x5divc {
+    display: flex;
+    flex-flow: wrap;
+    grid-column: initial;
+    position: inherit;
+    left: 5vw;
+    top: 15vh;
+    max-height: 500px;
+    max-width: 500px;
+}
+
+.x6divc {
+    display: flex;
+    flex-flow: wrap;
+    grid-column: initial;
+    position: absolute;
+    left: 0vw;
+    top: 11vh;
+    max-height: 600px;
+    max-width: 600px;
+}
+
+.escondido {
+    visibility: hidden;
+}
+
+.aparece {
+    visibility: visible;
+}
+
+#foda {
+    display: flex;
+    align-items: center;
+}
+
+#btnAplicar {
+    height: 9vh;
+    width: 10vw;
+    position: absolute;
+    right: -1vw;
+    background-color: #535353;
+    color: rgb(255, 255, 255);
+    border: 0.1vh solid #000000;
+    border-radius: 2vh;
+    font-size: 2vh;
+}
+
+.selecionado {
+    color: rgb(255, 252, 81);
+}
+
+.naosel {
+    color: white;
+}
+
+h5 {
+    font-size: 2vh;
+    margin-left: 2vh;
+}
+
+h4{
+    font-size: 2.4vh;
+}
+
+h1{
+    
+    font-size: 5vh;
+}
+
+Celula {
+    display: block;
+}
+
+#btnHide {
+    height: 7vh;
+    width: 10vw;
+    position: absolute;
+    right: 1vw;
+    top: 14vh;
+    background-color: #535353;
+    color: white;
+    border: 0.1vh solid #000000;
+    border-radius: 2vh;
+    font-size: 2vh;
+}
+
+.x3full {
+    max-height: 75vh;
+    position: static;
+    justify-content: center;
+    border-bottom: 2.5vh transparent solid;
+}
+
+.x4full {
+    max-height: 75vh;
+    position: static;
+    justify-content: center;
+}
+
+.x5full {
+    max-height: 75vh;
+    position: static;
+    justify-content: center;
+}
+
+.x6full {
+    max-height: 75vh;
+    position: static;
+    justify-content: center;
+}

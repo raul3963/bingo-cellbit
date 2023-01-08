@@ -1,0 +1,36 @@
+
+.App-header {
+  background-color: #3a3a3a;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(5px + 2vmin);
+  color: rgb(255, 255, 255);
+  background-image: url("./models/foda2.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position-y: center;
+  background-position-x: center;
+  background-blend-mode: overlay;
+}
+
+
+h3 {
+  align-self: center;
+  justify-self: center;
+  font-size: 3vh;
+}
+
+a{
+  font-size: 2vh;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: white;
+}
+
+footer {
+  margin-left: 10px;
+  color: gainsboro;
+  font-size: x-small;
+}

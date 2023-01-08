@@ -70,8 +70,8 @@ textarea {
     flex-flow: wrap;
     grid-column: initial;
     position: absolute;
-    left: 0vw;
-    top: 11vh;
+    left: 2vw;
+    top: 12vh;
     max-height: 600px;
     max-width: 600px;
 }

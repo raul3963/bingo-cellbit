@@ -3,9 +3,17 @@ import { Celula } from '../../models/bingo/celula';
 import Select from 'react-select';
 import { useState } from 'react';
 import '../../models/bingo/celula.css'
+import { getItem, setItem } from '../../models/database/localStorage.js'
+import { useEffect } from 'react';
 
 function Jogos() {
 
+  useEffect(() => {
+    const inputBingo = document.getElementById("inputBingo");
+    let texto = getItem("BingoCellbit");
+    inputBingo.value = texto;
+    aplicar()
+  }, []);
 
 
   const [x3, setx3] = useState(false);
@@ -35,6 +43,7 @@ function Jogos() {
   function aplicar() {
     let texto = document.getElementById("inputBingo").value;
     var lines = texto.split("\n");
+    setItem("BingoCellbit", texto)
     var count = lines.length;
     console.log(texto.split("\n").length);
 
@@ -162,7 +171,7 @@ function Jogos() {
 
   return (
     <div className="jogos">
-      <div id='bingo' className={classe}>
+      <div id='bingo' className="aparece">
         <div id="x3div" className={x3 ? "Aparece x3divc" : "escondido x3divc"}>
         </div>
         <div id="x4div" className={x4 ? "Aparece x4divc" : "escondido x4divc"}>

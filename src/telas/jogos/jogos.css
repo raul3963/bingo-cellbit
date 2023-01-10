@@ -19,6 +19,7 @@ textarea {
     margin: 1vh;
     resize: none;
     color: rgb(255, 255, 255);
+    margin: 0px;
 }
 
 #lista {
@@ -37,10 +38,10 @@ textarea {
     align-content: center;
     justify-content: center;
     position: absolute;
-    top: 0px;
+    top: 10vh;
     left: 0px;
     width: 100vw;
-    height: 100vh;
+    height: 90vh;
 }
 
 .x4divc {

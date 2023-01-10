@@ -15,6 +15,28 @@
   background-blend-mode: overlay;
 }
 
+#divSidebarPressets{
+  height: 89.5vh;
+  width: 30vw;
+  border: 0.2vh black solid;
+  background-color: #2c2c2c;
+  position: absolute;
+  top: 10vh;
+}
+
+#btnPressetsLista {
+  height: 5vh;
+  width: 10vw;
+  position: absolute;
+  left: 1vw;
+  top: 2.5vh;
+  background-color: #535353;
+  color: rgb(255, 255, 255);
+  border: 0.1vh solid #000000;
+  border-radius: 2vh;
+  font-size: 2vh;
+}
+
 
 h3 {
   align-self: center;

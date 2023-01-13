@@ -72,7 +72,13 @@ function Jogos() {
         let i = 0;
         lines.forEach(element => {
           let cell = document.createElement("button");
-          cell.className = "celula";
+          if (document.getElementById('btnTemaChange').className == "btnMedo") {
+
+            cell.className = "celulaMedo";
+          } else {
+
+            cell.className = "celula";
+          }
           cell.id = "celula" + i
           console.log(cell.click)
           cell.onclick = () => {
@@ -82,6 +88,11 @@ function Jogos() {
               celulasel.className = "celula"
             } else if (celulasel.className == "celula") {
               celulasel.className = "celula cellselecionado"
+            }
+            if (celulasel.className == "celulaMedo cellselecionadoMedo") {
+              celulasel.className = "celulaMedo"
+            } else if (celulasel.className == "celulaMedo") {
+              celulasel.className = "celulaMedo cellselecionadoMedo"
             }
           }
           cell.innerText = element.toString();
@@ -104,7 +115,13 @@ function Jogos() {
         let i = 0;
         lines.forEach(element => {
           let cell = document.createElement("button");
-          cell.className = "celulamenor";
+          if (document.getElementById('btnTemaChange').className == "btnMedo") {
+
+            cell.className = "celulamenorMedo";
+          } else {
+
+            cell.className = "celulamenor";
+          }
           cell.id = "celula" + i
           console.log(cell.click)
           cell.onclick = () => {
@@ -113,6 +130,11 @@ function Jogos() {
               celulasel.className = "celulamenor"
             } else if (celulasel.className == "celulamenor") {
               celulasel.className = "celulamenor cellselecionado"
+            }
+            if (celulasel.className == "celulamenorMedo cellselecionadoMedo") {
+              celulasel.className = "celulamenorMedo"
+            } else if (celulasel.className == "celulamenorMedo") {
+              celulasel.className = "celulamenorMedo cellselecionadoMedo"
             }
           }
           cell.innerText = element.toString();
@@ -135,7 +157,13 @@ function Jogos() {
         let i = 0;
         lines.forEach(element => {
           let cell = document.createElement("button");
-          cell.className = "celulamenor";
+          if (document.getElementById('btnTemaChange').className == "btnMedo") {
+
+            cell.className = "celulamenorMedo";
+          } else {
+
+            cell.className = "celulamenor";
+          }
           cell.id = "celula" + i
           console.log(cell.click)
           cell.onclick = () => {
@@ -145,6 +173,11 @@ function Jogos() {
               celulasel.className = "celulamenor"
             } else if (celulasel.className == "celulamenor") {
               celulasel.className = "celulamenor cellselecionado"
+            }
+            if (celulasel.className == "celulamenorMedo cellselecionadoMedo") {
+              celulasel.className = "celulamenorMedo"
+            } else if (celulasel.className == "celulamenorMedo") {
+              celulasel.className = "celulamenorMedo cellselecionadoMedo"
             }
           }
           cell.innerText = element.toString();
@@ -170,7 +203,7 @@ function Jogos() {
 
 
   return (
-    <div className="jogos">
+    <div id="jogos">
       <div id='bingo' className="aparece">
         <div id="x3div" className={x3 ? "Aparece x3divc" : "escondido x3divc"}>
         </div>
@@ -187,9 +220,9 @@ function Jogos() {
           <h4>Conteudo do bingo, 1 linha = 1 quadrado.<br /> proporção modificada automaticamente <br />
           </h4>
 
-          <button id="btnAplicar" onClick={aplicar}>Aplicar</button>
+          <button id="btnAplicar" className='btnNormal' onClick={aplicar}>Aplicar</button>
         </div>
-        <textarea id='inputBingo' />
+        <textarea id='inputBingo' className='btnNormal' />
         <div className='flex'>
           <h5 className={classe == "x4" ? "selecionado" : "naosel"}>4x4 </h5>
           <h5 className={classe == "x5" ? "selecionado" : "naosel"}>5x5 </h5>
@@ -197,7 +230,7 @@ function Jogos() {
         </div>
       </div>
 
-      <button id="btnHide" onClick={hideshow}>Esconder UI</button>
+      <button id="btnHide" className='btnNormal' onClick={hideshow}>Esconder UI</button>
     </div >
   )
 }

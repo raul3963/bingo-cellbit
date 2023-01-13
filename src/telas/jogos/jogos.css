@@ -1,24 +1,20 @@
-.jogos {
+#jogos {
     display: flex;
     overflow-block: scroll;
     margin-top: 1vh;
     height: 89vh;
     width: 100vw;
-    background-color: #222222;
     color: white;
 }
 
 
-textarea {
+#inputBingo {
     font-size: 2.5vh;
     height: 50vh;
     width: 42vw;
-    background-color: #535353;
-    border: 0.1vh solid rgb(0, 0, 0);
     border-radius: 2vh;
     margin: 1vh;
     resize: none;
-    color: rgb(255, 255, 255);
     margin: 0px;
 }
 
@@ -96,9 +92,6 @@ textarea {
     width: 10vw;
     position: absolute;
     right: -1vw;
-    background-color: #535353;
-    color: rgb(255, 255, 255);
-    border: 0.1vh solid #000000;
     border-radius: 2vh;
     font-size: 2vh;
 }
@@ -143,9 +136,6 @@ Celula {
     position: absolute;
     right: 1vw;
     top: 14vh;
-    background-color: #535353;
-    color: white;
-    border: 0.1vh solid #000000;
     border-radius: 2vh;
     font-size: 2vh;
 }

@@ -13,7 +13,23 @@
     box-shadow: 5px 25px 5px #2b2b2b;
     overflow-wrap: anywhere;
     color: white;
+}
 
+.celulaMedo{
+    display: flex;
+    height: 100px;
+    width: 100px;
+    border: 1px rgb(0, 0, 0) solid;
+    background-color: #4d1c1c;
+    border-radius: 15px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: smaller;
+    margin: 5px;
+    box-shadow: 5px 25px 5px rgb(53, 0, 0);
+    overflow-wrap: anywhere;
+    color: white;
 }
 
 
@@ -35,8 +51,32 @@
 
 }
 
+.celulamenorMedo {
+    display: flex;
+    height: 80px;
+    width: 80px;
+    border: 1px rgb(0, 0, 0) solid;
+    background-color: #4d1c1c;
+    border-radius: 15px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    font-size: smaller;
+    margin: 5px;
+    box-shadow: 5px 25px 5px rgb(53, 0, 0);
+    overflow-wrap: anywhere;
+    color: white;
+
+}
+
 .cellselecionado {
     border: 2px rgb(229, 255, 0) solid;
     background-color: rgb(150, 147, 0);
-    box-shadow: 5px 25px 5px #201f00;
+    box-shadow: 5px 25px 5px #6d6900;
+}
+
+.cellselecionadoMedo {
+    border: 2px rgb(255, 0, 0) solid;
+    background-color: rgb(131, 0, 0);
+    box-shadow: 5px 25px 5px #a30000;
 }

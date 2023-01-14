@@ -44,18 +44,22 @@ function App() {
       btnAplicar.className = 'btnMedo'
       inputBingo.className = 'btnMedo'
       Array.from(document.getElementsByClassName("celula")).forEach(element => {
-        if(element.className == "celula cellselecionado"){
+        if (element.className == "celula cellselecionado") {
           element.className = "celulaMedo cellselecionadoMedo"
-        }else{
-        element.className = "celulaMedo"
-      }
+        } else {
+          element.className = "celulaMedo"
+        }
       });
       Array.from(document.getElementsByClassName("celulamenor")).forEach(element => {
-        if(element.className == "celulamenor cellselecionado"){
+        if (element.className == "celulamenor cellselecionado") {
           element.className = "celulamenorMedo cellselecionadoMedo"
-        }else{
-        element.className = "celulamenorMedo"
-      }
+        } else {
+          element.className = "celulamenorMedo"
+        }
+      });
+      Array.from(document.getElementsByClassName("linhanormal")).forEach(element => {
+        element.classList.remove("linhanormal")
+        element.classList.add("linhamedo")
       });
     } else if (btnTemaChange.className == 'btnMedo') {
       btnTemaChange.className = 'btnNormal'
@@ -66,25 +70,30 @@ function App() {
       jogos.className = "bodyNormal"
       Appheader.className = "normalHeader"
       Array.from(document.getElementsByClassName("celulaMedo")).forEach(element => {
-        if(element.className == "celulaMedo cellselecionadoMedo"){
+        if (element.className == "celulaMedo cellselecionadoMedo") {
           element.className = "celula cellselecionado"
-        }else{
-        element.className = "celula"
-      }
+        } else {
+          element.className = "celula"
+        }
       });
       Array.from(document.getElementsByClassName("celulamenorMedo")).forEach(element => {
-        if(element.className == "celulamenorMedo cellselecionadoMedo"){
+        if (element.className == "celulamenorMedo cellselecionadoMedo") {
           element.className = "celulamenor cellselecionado"
-        }else{
-        element.className = "celulamenor"
-      }
+        } else {
+          element.className = "celulamenor"
+        }
+      });
+
+      Array.from(document.getElementsByClassName("linhamedo")).forEach(element => {
+        element.classList.remove("linhamedo")
+        element.classList.add("linhanormal")
       });
     }
   }
 
   return (
     <div className="App">
-      <header id="Appheader"className="normalHeader">
+      <header id="Appheader" className="normalHeader">
         <h3>BINGO DO CELLBIT</h3>
         {/*<button id="btnPressetsLista" onClick={tornarVisivel}>Pressets Salvos</button>*/}
         <button id='btnTemaChange' className='btnNormal' onClick={mudarTema}>Tema do Medo</button>

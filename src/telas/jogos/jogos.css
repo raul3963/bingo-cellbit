@@ -7,6 +7,112 @@
     color: white;
 }
 
+.linha4h {
+    position: absolute;
+    content: "";
+    height: 2px;
+    width: 500px;
+    margin-left: 335px;
+}
+
+.linha5h {
+    position: absolute;
+    content: "";
+    height: 2px;
+    width: 500px;
+    margin-left: 350px;
+}
+
+.linha6h {
+    position: absolute;
+    content: "";
+    height: 2px;
+    width: 575px;
+    margin-left: 450px;
+}
+
+.linha4v {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 500px;
+    margin-top: 335px;
+}
+
+
+.linha5v {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 500px;
+    margin-top: 360px;
+}
+
+.linha6v {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 575px;
+    margin-top: 450px;
+}
+
+#linha4d1 {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 650px;
+    margin-top: 325px;
+    margin-left: 325px;
+    transform: rotate(-45deg);
+}
+#linha4d2 {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 650px;
+    margin-top: 325px;
+    margin-right: 325px;
+    transform: rotate(45deg);
+}
+
+
+#linha5d1 {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 650px;
+    margin-top: 360px;
+    margin-left: 360px;
+    transform: rotate(-45deg);
+}
+#linha5d2 {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 650px;
+    margin-top: 360px;
+    margin-right: 360px;
+    transform: rotate(45deg);
+}
+
+#linha6d1 {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 775px;
+    margin-top: 450px;
+    margin-left: 450px;
+    transform: rotate(-45deg);
+}
+#linha6d2 {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 775px;
+    margin-top: 450px;
+    margin-right: 450px;
+    transform: rotate(45deg);
+}
 
 #inputBingo {
     font-size: 2.5vh;
@@ -17,6 +123,17 @@
     resize: none;
     margin: 0px;
 }
+
+.linhanormal{
+    pointer-events: none;
+    background-color: rgb(229, 255, 0);
+}
+
+.linhamedo{
+    pointer-events: none;
+    background-color: rgb(255, 0, 0);
+}
+
 
 #lista {
     position: absolute;
@@ -96,7 +213,7 @@
     font-size: 2vh;
 }
 
-.flex{
+.flex {
     max-height: 1vh;
     display: flex;
 }

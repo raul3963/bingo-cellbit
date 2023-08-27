@@ -1,8 +1,8 @@
 {
   "name": "bingo-cellbit",
-  "version": "0.1.0",
-  "homepage": "https://raul3963.github.io/bingo-cellbit",
-  "private": true,
+  "version": "0.2.0",
+  "homepage": "https://raul3963.github.io/bingo-cellbit/",
+  "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -12,7 +12,7 @@
     "react-color-palette": "^7.0.4",
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "react-select": "^5.6.1",
     "reactjs-popup": "^2.0.5",
     "web-vitals": "^2.1.4"

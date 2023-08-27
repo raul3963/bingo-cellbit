@@ -12,17 +12,9 @@ body {
   overflow-y: auto;
 }
 
-.bodyNormal{
-  background-color: #222222;
+html {
+  height: 100vh;
 }
-
-.bodyMedo{
-  background-color: #240000;
-  background-image: url("./models/foda.png");
-  background-size:auto;
-  background-blend-mode: multiply;
-}
-
 
 
 code {

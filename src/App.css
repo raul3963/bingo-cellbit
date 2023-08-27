@@ -17,19 +17,6 @@
   background-color: #3a3a3a;
 }
 
-.medoHeader{
-  background-color: #330202;
-}
-
-#divSidebarPressets {
-  height: 89.5vh;
-  width: 30vw;
-  border: 0.2vh black solid;
-  background-color: #2c2c2c;
-  position: absolute;
-  top: 10vh;
-}
-
 #btnPressetsLista {
   height: 5vh;
   width: 10vw;
@@ -40,24 +27,203 @@
   font-size: 2vh;
 }
 
-#btnTemaChange {
-  height: 5vh;
-  width: 10vw;
+#divSidebar {
+  display: flex;
+  flex-direction: column;
   position: absolute;
-  right: 1vw;
-  top: 2.5vh;
-  border-radius: 2vh;
+  left: -25vw;
+  top: 10vh;
+  height: 90%;
+  width: 25vw;
+  background-color: #333333;
+  border-bottom-right-radius: 5vh;
+}
+
+#btnPopupSalvarBingoFechar{
+  position:absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 0vw;
+  top: 0vh;
+  height: 5vh;
+  width: 5vh;
+  padding: 0px;
+  margin: 0px;
+  background-color: rgb(238, 81, 81);
+  border: 0.2vh solid;
+}
+
+#btnPopupCarregarBingoFechar{
+  position:absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  right: 0vw;
+  top: 0vh;
+  height: 5vh;
+  width: 5vh;
+  padding: 0px;
+  margin: 0px;
+  background-color: rgb(238, 81, 81);
+  border: 0.2vh solid;
+}
+
+#ListaBingos::-webkit-scrollbar {
+  width: 0vw;
+}
+
+.btnListaBingoCarregar::-webkit-scrollbar {
+  width: 0vh;
+}
+
+#salvarPopup span {
   font-size: 2vh;
+  margin-bottom: 2vh;
+}
+
+#carregarPopup span {
+  font-size: 2vh;
+  margin-bottom: 2vh;
+}
+
+#ListaBingos {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+}
+
+#carregarPopup {
+  height: 75vh;
+  top: 12.5vh;
+}
+
+.popupBody{
+  position:fixed;
+  left: 35vw;
+  top: 35vh;
+  color: white;
+  width: 30vw;
+  height: 30vh;
+  background-color: #3a3a3a;
+  margin: 0vw;
+  border-radius: 5vh;
+  padding: 2vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popupBody h2 {
+  font-size: 3vh;
+  margin-top: 0vh;
+}
+
+.btnListaBingoCarregar {
+  margin-top: 1vh;
+  width: 80%;
+}
+
+.popupBody button {
+  padding: 2vh;
+  margin-top: 2.5vh;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  border-radius: 1vw;
+  font-size: 2vh;
+}
+
+.inputNormal {
+  padding: 1vh;
+  font-size: 2.5vh;
+  height: 10vh;
+  width: 25vw;
+  border-radius: 2vh;
+  margin: 1vh;
+  resize: none;
+  margin: 0px;
+  background-color: #535353;
+  border-color: #000000;
+  overflow: hidden;
+  color: white;
+}
+
+#inputPopupSalvarBingo {
+  text-align: center;
+  line-height: 5vh;
+  height: 5vh;
+  width: 27.5vw;
+}
+
+/* ANIMAÇÕES */
+
+div#divSidebar.aparece {
+  transition: 400ms;
+  left: 0px;
+}
+
+div#divSidebar.escondido {
+  transition: 400ms;
+  left: -25vw;
+}
+
+div#divSidebar button.aparece {
+  transition: 250ms;
+}
+
+div#divSidebar button.escondido {
+  transition: 250ms;
+}
+
+/* ANIMAÇÕES FIM */
+
+#divBottomSide {
+  height: 100%;
+}
+
+#divSidebar button {
+  padding: 2vh;
+  margin-top: 2.5vh;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  border-radius: 1vw;
+  font-size: 2vh;
+}
+
+
+#divSidebar i {
+  font-size: 2.5vh;
+  color: white;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  margin-top: 2.5vh;
+  margin-bottom: 2.5vh;
+}
+
+
+#btnBar {
+  padding: 0px;
+  display: flex;
+  height: 10vh;
+  width: 10vh;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  align-items: center;
+  justify-content: center;
+  font-size: 3vh;
+}
+
+.btnHeader {
+  background-color: transparent;
+  color: rgb(255, 255, 255);
+  border-style: none;
 }
 
 .btnNormal {
   background-color: #535353;
-  color: rgb(255, 255, 255);
-  border: 0.1vh solid #000000;
-}
-
-.btnMedo {
-  background-color: #471818;
   color: rgb(255, 255, 255);
   border: 0.1vh solid #000000;
 }

@@ -34,14 +34,12 @@ function setData (chave, valor) {
 function getData (chave) {
   if(String(localStorage.getItem(chave)).includes("bingoSalvo"))
   {
-    console.log("SIM")
     if (localStorage.getItem(chave) != null){
       return JSON.parse(localStorage.getItem(chave));
     } else {
       return JSON.parse(JSON.stringify(data));
     }
   }else{
-    console.log("NÃO")
     clearData ("BingoCellbit");
     return JSON.parse(JSON.stringify(data));
   }

@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import './index.css';
-import { Route, Routes, BrowserRouter, useNavigate } from "react-router-dom";
+import { Route, HashRouter, Routes } from "react-router-dom";
 import Jogos from './telas/jogos';
 import Temas from './telas/temas';
 import { FaBars, FaTrashAlt } from 'react-icons/fa'
@@ -23,6 +23,8 @@ function App() {
   
 
   useEffect(() => {
+    
+    console.log(window.location.hash)
 
     //clearData()
 
@@ -37,10 +39,10 @@ function App() {
 
     // STYLES FODAS
 
-    var styleObj = document.createElement('style');
-    styleObj.type = 'text/css';
-    styleObj.innerHTML = '.selecionado { color:'+borderObjSelColor+' }';
-    document.getElementsByTagName('head')[0].appendChild(styleObj);
+    var styleObjs = document.createElement('style');
+    styleObjs.type = 'text/css';
+    styleObjs.innerHTML = '.selecionado { color:'+borderObjSelColor+' }';
+    document.getElementsByTagName('head')[0].appendChild(styleObjs);
 
     var styleObj = document.createElement('style');
     styleObj.type = 'text/css';
@@ -61,7 +63,6 @@ function App() {
     styleObjSel.type = 'text/css';
     styleObjSel.innerHTML = '.objetossel { background-color: '+bgObjSelColor+'; color: '+txtColor+'; border: 5px; border-color: '+bgObjSelColor+'; box-shadow: 5px 25px 5px '+borderObjSelColor+'}';
     document.getElementsByTagName('head')[0].appendChild(styleObjSel);
-
     //FIM STILES FODAS
 
     
@@ -88,16 +89,21 @@ function App() {
       objetos2.item(index).style.backgroundColor = bgHeaderColor;
     }
 
-    const currentUrl = window.location.pathname;
-    if(currentUrl == "/bingo-cellbit"){
+    const currentUrl = window.location.hash;
+    if(currentUrl == ""){
       document.getElementById("btnNav").innerHTML = "Temas";
-    }else if(currentUrl == "/bingo-cellbit/temas"){
+    }else if(currentUrl == "#/temas"){
       document.getElementById("btnNav").innerHTML = "Bingo";
       document.getElementById("btnCarregar").className = "btnNormal escondido objetos";
     }
    }, []);
 
   function sidebarChange() {
+    if (window.location.hash == ""){
+    document.getElementById("btnNav").innerHTML = "Temas"
+  }else if (window.location.hash == "#/temas"){
+    document.getElementById("btnNav").innerHTML = "Bingo"
+  }
     const divSidebar = document.getElementById("divSidebar");
     const btnTemas = document.getElementById("btnNav")
     const btnSalvar = document.getElementById("btnSalvar")
@@ -107,18 +113,18 @@ function App() {
     if(divSidebar.className == 'escondido objetos2'){
       divSidebar.className = "aparece objetos2";
       btnTemas.className = "btnNormal aparece objetos";
-      if(window.location.pathname != "/bingo-cellbit/temas"){
+      if(window.location.hash != "#/temas"){
         btnSalvar.className = "btnNormal aparece objetos";
         btnCarregar.className = "btnNormal aparece objetos";
       }
-     // btnoverlay.className = "btnNormal aparece";
-      // btnComoUsar.className = "btnNormal aparece";
+      //btnoverlay.className = "btnNormal aparece";
+      //btnComoUsar.className = "btnNormal aparece";
     }else if(divSidebar.className == "aparece objetos2"){
       divSidebar.className = 'escondido objetos2';
       btnTemas.className = 'btnNormal escondido objetos';
       btnSalvar.className = 'btnNormal escondido objetos';
       btnCarregar.className = 'btnNormal escondido objetos';
-      //btnoverlay.className = 'btnNormal escondido objetos';
+      btnoverlay.className = 'btnNormal escondido objetos';
       btnComoUsar.className = 'btnNormal escondido objetos';
     }
   }
@@ -136,7 +142,7 @@ function App() {
   function fecharPopup(){
     let popupCarregar = document.getElementById("carregarPopup")
     let popupSalvar = document.getElementById("salvarPopup")
-    let popupoutrola = document.getElementById("ApagarTemaPopup")
+    let popupoutrola = document.getElementById("ApagarBingoPopup")
     popupCarregar.className = "popupBody escondido objetos2"
     popupSalvar.className = "popupBody escondido objetos2"
     popupoutrola.className = "popupBody escondido objetos2"
@@ -220,6 +226,8 @@ function App() {
     }
   }
   }
+
+  const [hash, setHash] = useState("");
 
   const [x3, setx3] = useState(false);
   const [x4, setx4] = useState(false);
@@ -349,17 +357,20 @@ function App() {
 
   function navegar(event){
     if(event.target.id == "btnNav"){
-      const currentUrl = window.location.pathname;
-      if(currentUrl == "/bingo-cellbit" || currentUrl == "/bingo-cellbit/"){
-        window.location.pathname = "/bingo-cellbit/temas"
-      }else if(currentUrl == "/bingo-cellbit/temas"){
-        window.location.pathname = "/bingo-cellbit/"
+      let currentUrl = window.location.hash;
+      if(currentUrl == ""){
+        window.location.hash = "#/temas"
+        sidebarChange();
+      }else if(currentUrl == "#/temas"){
+        window.location.hash = ""
+        sidebarChange();
+        document.getElementById()
       }
     }
   }
 
   function abrirPopupApagar(){
-    let idPopup = "ApagarTemaPopup"
+    let idPopup = "ApagarBingoPopup"
     let popup = document.getElementById(idPopup);
     if(popup.className == "popupBody aparece objetos2"){
       popup.className = "popupBody escondido objetos2"
@@ -382,15 +393,13 @@ function App() {
         <button id='btnBar' className='btnHeader objetos2' onClick={sidebarChange}><FaBars /></button>
       </header>
       <div id="corpo">
-        <BrowserRouter>
-              <Routes>
-                <Route element = { <Jogos /> }  path="/bingo-cellbit/" />
-                <Route element = { <Temas /> }  path="/bingo-cellbit/Temas" />
-            </Routes>
-        </BrowserRouter>
+        <Routes>
+          <Route element = { <Jogos /> }  path="/" />
+          <Route element = { <Temas /> }  path="/temas" />
+        </Routes>
       </div>
       <div id="divSidebar" className='escondido objetos2'>
-      <button id="btnNav" className='btnNormal escondido objetos'>WIP</button>
+      <button id="btnNav" className='btnNormal escondido objetos' onClick={navegar}></button>
         <br />
         <button id='btnSalvar' className='btnNormal escondido objetos' onClick={abrirPopup}> Salvar Bingo </button>
         <div id="salvarPopup" className='popupBody escondido objetos2'>
@@ -413,7 +422,14 @@ function App() {
         <div id="divBottomSide"/>
         <button id="btnComoUsar" className='btnNormal escondido'>Como Usar</button>
         <i className='BottomSidebar'>Feito por: raul396</i>
-        
+        <div id="ApagarBingoPopup" className='popupBody escondido objetos2'>
+                    <h2>Apagar</h2>
+                    <span id="apagarSpanPopup">Você deseja apagar o tema</span>
+                    <div style={{display: 'flex'}}>
+                      <button id='btnPopupApagarTema' className='btnNormal objetos' onClick={apagarBingo}> Apagar </button>
+                      <button id='btnPopupApagarTemaNegar' className='btnNormal objetos' onClick={fecharPopup}> Cancelar </button>
+                    </div>
+                </div>
       </div> 
     </div>
   );

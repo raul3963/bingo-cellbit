@@ -16,10 +16,67 @@ function Jogos() {
   const [x6, setx6] = useState(false);
   const [classe, setClasse] = useState("x3");
 
+  
+  let bgColor = "#00000";
+  let bgHeaderColor = "#00000";
+  let txtColor = "#fff";
+  let bgObjColor = "#00000";
+  let borderObjColor = "#00000";
+  let bgObjSelColor = "#00000";
+  let borderObjSelColor = "#00000";
+
   useEffect(() => {
     let data = getData("BingoCellbit");
     document.getElementById("inputBingo").value = data.bingoAtual;
     aplicar();
+    bgColor = data.temaAtual.bgColor;
+    bgHeaderColor = data.temaAtual.bgHeaderColor;
+    txtColor = data.temaAtual.txtColor;
+    bgObjColor = data.temaAtual.bgObjColor;
+    borderObjColor = data.temaAtual.borderObjColor;
+    bgObjSelColor = data.temaAtual.bgObjSelColor;
+    borderObjSelColor = data.temaAtual.borderObjSelColor;
+
+    // STYLES FODAS
+
+    var styleObjs = document.createElement('style');
+    styleObjs.type = 'text/css';
+    styleObjs.innerHTML = '.selecionado { color:'+borderObjSelColor+' }';
+    document.getElementsByTagName('head')[0].appendChild(styleObjs);
+
+    var styleObj = document.createElement('style');
+    styleObj.type = 'text/css';
+    styleObj.innerHTML = '.objetos { background-color: '+bgObjColor+'; color: '+txtColor+'; border: 2vh; border-color: '+borderObjColor+'; box-shadow: 5px 25px 5px '+ borderObjColor+'}';
+    document.getElementsByTagName('head')[0].appendChild(styleObj);
+
+    var styleObj2 = document.createElement('style');
+    styleObj2.type = 'text/css';
+    styleObj2.innerHTML = '.objetos2 { background-color: '+bgHeaderColor+'; color: '+txtColor+'; border: 2vh '+borderObjColor+';}';
+    document.getElementsByTagName('head')[0].appendChild(styleObj2);
+
+    var styleObj3 = document.createElement('style');
+    styleObj3.type = 'text/css';
+    styleObj.innerHTML = '.objetos3 { background-color: '+bgObjColor+'; color: '+txtColor+'; border: 5px; border-color: '+borderObjColor+'; box-shadow: 5px 25px 5px '+ borderObjColor+'}';
+    document.getElementsByTagName('head')[0].appendChild(styleObj3);
+
+    var styleObjSel = document.createElement('style');
+    styleObjSel.type = 'text/css';
+    styleObjSel.innerHTML = '.objetossel { background-color: '+bgObjSelColor+'; color: '+txtColor+'; border: 5px; border-color: '+bgObjSelColor+'; box-shadow: 5px 25px 5px '+borderObjSelColor+'}';
+    document.getElementsByTagName('head')[0].appendChild(styleObjSel);
+    //FIM STILES FODAS
+
+    let objetos = document.getElementsByClassName("objetos")
+    for (let index in objetos){
+      objetos.item(index).style.color = txtColor;
+      objetos.item(index).style.backgroundColor = bgObjColor;
+      objetos.item(index).style.borderCorlor = borderObjColor;
+    
+    }
+    let objetos2 = document.getElementsByClassName("objetos2")
+    for (let index in objetos2){
+      objetos2.item(index).style.color = txtColor;
+      objetos2.item(index).style.backgroundColor = bgHeaderColor;
+    }
   }, []);
 
   function hideshow() {

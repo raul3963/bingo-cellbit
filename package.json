@@ -1,7 +1,7 @@
 {
   "name": "bingo-cellbit",
   "version": "0.2.0",
-  "homepage": "https://raul3963.github.io/bingo-cellbit/",
+  "homepage": "http://raul3963.github.io/bingo-cellbit/",
   "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",

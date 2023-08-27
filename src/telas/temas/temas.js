@@ -80,7 +80,7 @@ function Temas() {
                         let infoTema = JSON.parse(data.temaSalvo[i])
                         let finalTema = {bgColor: String(infoTema.bgColor), bgHeaderColor: String(infoTema.bgHeaderColor), txtColor: String(infoTema.txtColor), bgObjColor: String(infoTema.bgObjColor), borderObjColor: String(infoTema.borderObjColor),bgObjSelColor: String(infoTema.bgObjSelColor),borderObjSelColor: String(infoTema.borderObjSelColor)};
                         addData("temaAtual", "", finalTema);
-                        window.location.pathname = "/bingo-cellbit/temas";
+                        window.location.pathname = "/bingo-cellbit/";
                     }
                     divbtns.append(buttonLista);
                     let btnDelete =  document.createElement("button");
@@ -152,7 +152,7 @@ function Temas() {
             let data = {bgColor: "#222222", bgHeaderColor: "#3a3a3a", txtColor: "#fff", bgObjColor: "#535353", borderObjColor: "#000",bgObjSelColor: "#c2af00",borderObjSelColor: "#bdbd00"};
 
             addData("temaAtual", "", data);
-            window.location.pathname = "/bingo-cellbit/temas";
+            window.location.pathname = "/bingo-cellbit/";
     }
 
     function salvarTema(){
@@ -169,7 +169,7 @@ function Temas() {
         let nome = String(inputTema.value).replaceAll(" ","_");
         addData("temaSalvo", nome, data);
         addData("temaAtual", "", data);
-        window.location.pathname = "/bingo-cellbit/temas";
+        window.location.pathname = "/bingo-cellbit/";
     }
 
 

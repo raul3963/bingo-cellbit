@@ -20,6 +20,8 @@ function App() {
   let bgObjSelColor = "#00000";
   let borderObjSelColor = "#00000";
 
+  
+
   useEffect(() => {
 
     //clearData()
@@ -388,7 +390,7 @@ function App() {
         </BrowserRouter>
       </div>
       <div id="divSidebar" className='escondido objetos2'>
-      <button id="btnNav" className='btnNormal escondido objetos' onClick={navegar}>Temas</button>
+      <button id="btnNav" className='btnNormal escondido objetos'>WIP</button>
         <br />
         <button id='btnSalvar' className='btnNormal escondido objetos' onClick={abrirPopup}> Salvar Bingo </button>
         <div id="salvarPopup" className='popupBody escondido objetos2'>

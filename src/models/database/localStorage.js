@@ -32,9 +32,17 @@ function setData (chave, valor) {
 };
 
 function getData (chave) {
-  if (localStorage.getItem(chave) != null){
-    return JSON.parse(localStorage.getItem(chave));
-  } else {
+  if(String(localStorage.getItem(chave)).includes("bingoSalvo"))
+  {
+    console.log("SIM")
+    if (localStorage.getItem(chave) != null){
+      return JSON.parse(localStorage.getItem(chave));
+    } else {
+      return JSON.parse(JSON.stringify(data));
+    }
+  }else{
+    console.log("NÃO")
+    clearData ("BingoCellbit");
     return JSON.parse(JSON.stringify(data));
   }
 };
@@ -51,16 +59,8 @@ function deleteData (nome, id) {
   setData("BingoCellbit", JSON.stringify(datas))
 }
 
-function deleteDataTema (id) {
-  let datas = getData("BingoCellbit");
-  console.log(id);
-  console.log(datas.temaSalvo[id]);
-  delete datas.temaSalvo[id]
-  setData("BingoCellbit", JSON.stringify(datas))
-}
-
 function clearData (chave) {
   localStorage.clear()
 }
 
-export {setData, getData, addData, clearData, deleteData, deleteDataTema};
+export {setData, getData, addData, clearData, deleteData};

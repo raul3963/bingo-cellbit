@@ -196,6 +196,7 @@ function App() {
           document.getElementById("inputBingo").value = value;
           aplicar();
           fecharPopup();
+          window.location.reload()
         }
         divbtns.append(buttonLista);
         let btnDelete =  document.createElement("button");

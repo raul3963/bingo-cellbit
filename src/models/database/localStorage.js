@@ -40,7 +40,7 @@ function getData (chave) {
       return JSON.parse(JSON.stringify(data));
     }
   }else{
-    clearData ("BingoCellbit");
+    clearData("BingoCellbit");
     return JSON.parse(JSON.stringify(data));
   }
 };

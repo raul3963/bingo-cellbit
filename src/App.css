@@ -281,6 +281,16 @@ html {
   color: rgb(165, 0, 0);
 }
 
+#ListaBingos {
+  height: 45vh;
+  overflow-y: auto;
+}
+
+#ListaTemas {
+  height: 20vh;
+  overflow-y: auto;
+}
+
 
 .btnListaBingoCarregar {
   display: flex;

@@ -4,8 +4,7 @@ import { useState } from 'react';
 import { getData, addData, clearData, deleteData } from './models/database/localStorage.js'
 import { useEffect } from 'react';
 import { FaBlackTie, FaPencilAlt, FaSave } from "react-icons/fa";
-import { IoIosColorPalette, IoMdCheckmark } from "react-icons/io";
-import { FaBars, FaPenClip } from "react-icons/fa6";
+import { IoIosArrowUp, IoIosColorPalette, IoMdArrowBack, IoMdArrowDown, IoMdCheckmark } from "react-icons/io";
 import { ChromePicker } from 'react-color';
 import { useColor } from 'react-color-palette';
 
@@ -341,7 +340,7 @@ function App() {
     }
   }
 
-  //ALTERAR MODO
+  //TOGGLE EDIT E HEADER
 
   function toggleEdit() {
     let editable_elements = Array.from(document.getElementsByClassName("celula"));
@@ -379,11 +378,23 @@ function App() {
     }
   }
 
+  function toggleHeader() {
+    let header = document.getElementById("Appheader")
+    let headerArrow = document.getElementById("headerArrow")
+    if (header.className == "headerShow") {
+      header.className = "headerHide";
+      headerArrow.className = "arrowHeaderShow";
+    } else {
+      header.className = "headerShow";
+      headerArrow.className = "arrowHeaderHide";
+    }
+  }
+
   return (
     
     <div className="App">
     <div id="jogos">
-      <header id="Appheader" className='backgroundSecundario'>
+      <header id="Appheader" className='backgroundSecundario headerShow'>
         <h3>BINGO DO CELLBIT</h3>
         <button id="btnTemas" className='Buttons objeto' onClick={temaPopupToggle}> <IoIosColorPalette size={"3vh"} /> </button>
         <button id='btnBingoMenu' className='Buttons objeto' onClick={bingoPopupToggle}> <FaSave size={"3vh"} /> </button>
@@ -391,6 +402,7 @@ function App() {
           {editing ?
             <IoMdCheckmark size="3vh" /> : <FaPencilAlt />}
         </button>
+        <div id='toggleHeader' className='backgroundSecundario' onClick={toggleHeader}> <div id='headerArrow' className='arrowHeaderHide' style={{height: 'fit-content'}}> <IoIosArrowUp size="2.5vh"/> </div> </div>
       </header>
       <div id="corpo">
 

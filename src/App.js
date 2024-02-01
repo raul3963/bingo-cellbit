@@ -55,15 +55,7 @@ function App() {
   }
 
   function carregarTema() {
-    let data = getData("BingoCellbit");
-    console.log(data.temaAtual.bgColor);
-    bgColor = data.temaAtual.bgColor;
-    bgHeaderColor = data.temaAtual.bgHeaderColor;
-    txtColor = data.temaAtual.txtColor;
-    bgObjColor = data.temaAtual.bgObjColor;
-    borderObjColor = data.temaAtual.borderObjColor;
-    bgObjSelColor = data.temaAtual.bgObjSelColor;
-    borderObjSelColor = data.temaAtual.borderObjSelColor;
+    refreshThemeValues()
 
     let background = document.getElementsByClassName('background')
     for (let i = 0; i < background.length; i++) {
@@ -291,6 +283,7 @@ function App() {
         let value = String(data.bingoSalvo[i]).replace("undefined", '')
         loadSaveData = value;
         aplicar("loadSave");
+        toggleEdit("load")
       }
       divbtns.append(buttonLista);
       let btnDelete = document.createElement("button");
@@ -355,39 +348,52 @@ function App() {
 
   //TOGGLE EDIT E HEADER
 
-  function toggleEdit() {
+  function toggleEdit(toggle) {
     let editable_elements = Array.from(document.getElementsByClassName("celula"));
-    if (editing == true) {
-      aplicar("apply");
-      setEditing(false);
-      console.log(editing)
-      for (let e in editable_elements) {
-        let celula = document.getElementById("celula" + e)
-        celula.onclick = () => {
-          refreshThemeValues();
-          if (celula.className == "celula selecionado") {
-            celula.className = "celula objeto"
-            celula.style.backgroundColor = bgObjColor;
-            celula.style.borderColor = borderObjColor;
-            celula.style.color = txtColor;
-          } else if (celula.className == "celula objeto") {
-            celula.className = "celula selecionado"
-
-            celula.style.backgroundColor = bgColor;
-            celula.style.backgroundColor = bgObjSelColor;
-            celula.style.borderColor = borderObjSelColor;
-            celula.style.color = txtColor;
-          }
-        }
-        celula.contentEditable = false
-        celula.style.userSelect = "none";
-      }
-    } else {
+    if (toggle == "load") {
       setEditing(true);
       for (let e in editable_elements) {
         let celula = document.getElementById("celula" + e)
         celula.onclick = () => { celula.onfocus = true }
         celula.contentEditable = true
+        celula.className = "celula objeto"
+        celula.style.backgroundColor = bgObjColor;
+        celula.style.borderColor = borderObjColor;
+        celula.style.color = txtColor;
+      }
+    } else {
+      if (editing == true) {
+        aplicar("apply");
+        setEditing(false);
+        console.log(editing)
+        for (let e in editable_elements) {
+          let celula = document.getElementById("celula" + e)
+          celula.onclick = () => {
+            refreshThemeValues();
+            if (celula.className == "celula selecionado") {
+              celula.className = "celula objeto"
+              celula.style.backgroundColor = bgObjColor;
+              celula.style.borderColor = borderObjColor;
+              celula.style.color = txtColor;
+            } else if (celula.className == "celula objeto") {
+              celula.className = "celula selecionado"
+
+              celula.style.backgroundColor = bgColor;
+              celula.style.backgroundColor = bgObjSelColor;
+              celula.style.borderColor = borderObjSelColor;
+              celula.style.color = txtColor;
+            }
+          }
+          celula.contentEditable = false
+          celula.style.userSelect = "none";
+        }
+      } else {
+        setEditing(true);
+        for (let e in editable_elements) {
+          let celula = document.getElementById("celula" + e)
+          celula.onclick = () => { celula.onfocus = true }
+          celula.contentEditable = true
+        }
       }
     }
   }

@@ -475,7 +475,7 @@ html {
 }
 
 #themeBody {
-  height: 90vh;
+  height: 88vh;
   overflow-y: auto;
   overflow-x: auto;
   display: grid;

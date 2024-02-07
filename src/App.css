@@ -450,6 +450,21 @@ html {
   font-size: 2vh;
 }
 
+@keyframes click {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.celula[data-animation="active"]{
+  animation: click 0.2s 1 linear;
+}
 
 .objeto {
   color:white;

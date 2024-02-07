@@ -203,6 +203,7 @@ function App() {
           cell.contentEditable = true
           cell.id = "celula" + i
           cell.style.fontSize = "2.5vh"
+          cell.dataset.animation = "inactive";
           cell.innerText = element.toString();
           cell.onclick = () => {
             document.getElementById(cell.id).focus();
@@ -360,6 +361,7 @@ function App() {
         celula.style.backgroundColor = bgObjColor;
         celula.style.borderColor = borderObjColor;
         celula.style.color = txtColor;
+        celula.dataset.animation = "inactive";
       }
     } else {
       if (editing == true) {
@@ -369,6 +371,12 @@ function App() {
         for (let e in editable_elements) {
           let celula = document.getElementById("celula" + e)
           celula.onclick = () => {
+            celula.dataset.animation = "active";
+            setTimeout(
+              function() {
+                celula.dataset.animation = "inactive"
+              }, 500
+            )
             refreshThemeValues();
             if (celula.className == "celula selecionado") {
               celula.className = "celula objeto"

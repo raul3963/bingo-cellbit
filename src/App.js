@@ -7,6 +7,8 @@ import { FaBlackTie, FaPencilAlt, FaSave } from "react-icons/fa";
 import { IoIosArrowUp, IoIosColorPalette, IoMdArrowBack, IoMdArrowDown, IoMdCheckmark } from "react-icons/io";
 import { ChromePicker } from 'react-color';
 import { useColor } from 'react-color-palette';
+import { PiBroomFill } from "react-icons/pi";
+import html2canvas from "html2canvas";
 
 
 
@@ -44,7 +46,6 @@ function App() {
 
   function refreshThemeValues() {
     let data = getData("BingoCellbit");
-    console.log(data.temaAtual.bgColor);
     bgColor = data.temaAtual.bgColor;
     bgHeaderColor = data.temaAtual.bgHeaderColor;
     txtColor = data.temaAtual.txtColor;
@@ -59,7 +60,7 @@ function App() {
 
     let background = document.getElementsByClassName('background')
     for (let i = 0; i < background.length; i++) {
-      background[0].style.backgroundColor = bgColor;
+      background[i].style.backgroundColor = bgColor;
     }
 
     let objetos = document.getElementsByClassName('objeto');
@@ -84,7 +85,6 @@ function App() {
     let pickers = document.getElementsByClassName('chrome-picker');
     for (let i = 0; i < pickers.length; i++) {
       pickers[i].style.backgroundColor = bgHeaderColor + " !important";
-      console.log(pickers[i].style.backgroundColor)
     }
   }
 
@@ -133,7 +133,6 @@ function App() {
         let value = String(data.temaSalvo[i]).replace("undefined", '')
         addData("temaAtual", "", JSON.parse(value))
         carregarTema();
-        console.log(JSON.parse(value));
       }
       divbtns.append(buttonLista);
       let btnDelete = document.createElement("button");
@@ -164,6 +163,11 @@ function App() {
 
   //APLICAR EDIÇÃO
 
+  function ClearAplicar (){
+    aplicar("clear");
+    toggleEdit("load");
+  }
+
   function aplicar(by) {
     let celulas = Array.from(document.getElementsByClassName("celula"))
     let textinho = "";
@@ -185,6 +189,8 @@ function App() {
       texto = textinho;
     } else if (by == "loadSave") {
       texto = loadSaveData
+    } else if (by == "clear"){
+      texto = '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
     }
     var lines = texto.split("\n");
     addData("bingoAtual", "", texto)
@@ -207,7 +213,6 @@ function App() {
           cell.innerText = element.toString();
           cell.onclick = () => {
             document.getElementById(cell.id).focus();
-            console.log(cell.id)
           }
           divBingo.appendChild(cell);
           i += 1;
@@ -337,6 +342,7 @@ function App() {
       divPopup.className = "PopupHideTema"
       divBingo.className = "bingoToMiddle"
       document.getElementById("btnHide").className = "btnShowing objeto"
+      document.getElementById("btnClear").className = "btnShowing objeto"
 
     } else {
       carregarListaTemas()
@@ -344,6 +350,7 @@ function App() {
       divPopupBingo.className = "PopupHide"
       divBingo.className = "bingoHide"
       document.getElementById("btnHide").className = "btnHiding objeto"
+      document.getElementById("btnClear").className = "btnHiding objeto"
     }
   }
 
@@ -367,13 +374,12 @@ function App() {
       if (editing == true) {
         aplicar("apply");
         setEditing(false);
-        console.log(editing)
         for (let e in editable_elements) {
           let celula = document.getElementById("celula" + e)
           celula.onclick = () => {
             celula.dataset.animation = "active";
             setTimeout(
-              function() {
+              function () {
                 celula.dataset.animation = "inactive"
               }, 500
             )
@@ -391,6 +397,31 @@ function App() {
               celula.style.borderColor = borderObjSelColor;
               celula.style.color = txtColor;
             }
+            if (document.getElementById("canvaOverlay") != null) {
+              document.getElementById("canvaOverlay").remove();
+            }
+            html2canvas(document.getElementById("bingo")).then(canvas => {
+              canvas.id = "canvaOverlay"
+              canvas.style.visibility = "hidden"
+              document.body.appendChild(canvas)
+
+              if (window.location.hash == "#mods") {
+                console.log(window.location.hash)
+                let idCanva = "canvaOverlay";
+                let link = document.getElementById("canvasA");
+
+                if (link == null) {
+                  link = document.createElement('a');
+                  link.id = "canvasA";
+                }
+
+                link.download = 'Bingo.png';
+                link.href = document.getElementById(idCanva).toDataURL("image/jpeg", 1);
+                link.click();
+              };
+            });
+
+
           }
           celula.contentEditable = false
           celula.style.userSelect = "none";
@@ -419,13 +450,13 @@ function App() {
   }
 
   return (
-
     <div className="App">
       <div id="jogos">
         <header id="Appheader" className='backgroundSecundario headerShow'>
           <h3>BINGO DO CELLBIT</h3>
           <button id="btnTemas" className='Buttons objeto' onClick={temaPopupToggle}> <IoIosColorPalette size={"3vh"} /> </button>
           <button id='btnBingoMenu' className='Buttons objeto' onClick={bingoPopupToggle}> <FaSave size={"3vh"} /> </button>
+          <button id="btnClear" className='btnShowing objeto' onClick={ClearAplicar}> <PiBroomFill size={"3vh"} /> </button>
           <button id="btnHide" className='btnShowing objeto' onClick={toggleEdit}>
             {editing ?
               <IoMdCheckmark size="3vh" /> : <FaPencilAlt />}
@@ -435,7 +466,7 @@ function App() {
         <div id="corpo">
 
           <div id="wrap" className='bingoToMiddle'>
-            <div id='bingo'>
+            <div id='bingo' className='background'>
             </div>
           </div>
 

@@ -94,6 +94,23 @@ html {
 
 /* HEADER */
 
+#btnClear {
+  font-size: 2vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 7.5vh;
+  width: 7.5vh;
+  position: absolute;
+  right: 11vh;
+  top: 1.25vh;
+  border-radius: 2vh;
+  padding: 0px;
+  background-color: #535353;
+  border: solid 1px black;
+  color: white;
+}
+
 #btnHide {
   font-size: 2vh;
   display: flex;

@@ -9,7 +9,9 @@ import { ChromePicker } from 'react-color';
 import { useColor } from 'react-color-palette';
 import { PiBroomFill } from "react-icons/pi";
 import html2canvas from "html2canvas";
-
+import React from 'react';
+import ReactDom from 'react-dom';
+import Popup from 'react-popup';
 
 
 function App() {
@@ -25,6 +27,7 @@ function App() {
   const [colorBorderitems, setColorBorderitems] = useColor("#000000");
   const [colorBackgroundItemsSel, setBackgroundItemsSel] = useColor("#c2af00");
   const [colorBorderitemsSel, setColorBorderitemsSel] = useColor("#bdbd00");
+  const [isPopupOpen, setPopupOpen] = useState(false);
 
 
   // DECLARAR VARIAVEIS DE TEMAS SIMPLES
@@ -113,6 +116,11 @@ function App() {
       addData("temaAtual", "", TemaNovo)
       carregarTema();
     }
+    if (event.target.id == "btnPresetRed") {
+      let TemaNovo = { bgColor: "#370B0B", bgHeaderColor: "#5C1F1F", txtColor: "#FFFFFF", bgObjColor: "#643738", borderObjColor: "#000000", bgObjSelColor: "#8D0000", borderObjSelColor: "#D10000" };
+      addData("temaAtual", "", TemaNovo)
+      carregarTema();
+    }
   }
 
   function carregarListaTemas() {
@@ -163,7 +171,7 @@ function App() {
 
   //APLICAR EDIÇÃO
 
-  function ClearAplicar (){
+  function ClearAplicar() {
     aplicar("clear");
     toggleEdit("load");
   }
@@ -189,7 +197,7 @@ function App() {
       texto = textinho;
     } else if (by == "loadSave") {
       texto = loadSaveData
-    } else if (by == "clear"){
+    } else if (by == "clear") {
       texto = '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
     }
     var lines = texto.split("\n");
@@ -317,8 +325,27 @@ function App() {
     carregarTema();
   }
 
+  function clearPopupToggle() {
+    let divPopupTema = document.getElementById("PopupPlaceTema")
+    let divPopupBingo = document.getElementById("PopupPlaceBingo")
+    let divPopup = document.getElementById("PopupPlaceClear")
+    let divBingo = document.getElementById("wrap")
+    if (divPopup.className == "PopupShow") {
+      divPopup.className = "PopupHide"
+      divBingo.className = "bingoToMiddle"
+
+    } else {
+      divPopup.className = "PopupShow"
+      divPopupTema.className = "PopupHideTema"
+      divPopupBingo.className = "PopupHideTema"
+      divBingo.className = "bingoToSide"
+      document.getElementById("btnHide").className = "btnShowing objeto"
+    }
+  }
+
   function bingoPopupToggle() {
     let divPopupTema = document.getElementById("PopupPlaceTema")
+    let divPopupClear = document.getElementById("PopupPlaceClear")
     let divPopup = document.getElementById("PopupPlaceBingo")
     let divBingo = document.getElementById("wrap")
     if (divPopup.className == "PopupShow") {
@@ -327,6 +354,7 @@ function App() {
 
     } else {
       divPopup.className = "PopupShow"
+      divPopupClear.className = "PopupHideTema"
       divPopupTema.className = "PopupHideTema"
       divBingo.className = "bingoToSide"
       document.getElementById("btnHide").className = "btnShowing objeto"
@@ -337,6 +365,7 @@ function App() {
   function temaPopupToggle() {
     let divPopupBingo = document.getElementById("PopupPlaceBingo")
     let divPopup = document.getElementById("PopupPlaceTema")
+    let divPopupClear = document.getElementById("PopupPlaceClear")
     let divBingo = document.getElementById("wrap")
     if (divPopup.className == "PopupShowTema") {
       divPopup.className = "PopupHideTema"
@@ -348,6 +377,7 @@ function App() {
       carregarListaTemas()
       divPopup.className = "PopupShowTema"
       divPopupBingo.className = "PopupHide"
+      divPopupClear.className = "PopupHideTema"
       divBingo.className = "bingoHide"
       document.getElementById("btnHide").className = "btnHiding objeto"
       document.getElementById("btnClear").className = "btnHiding objeto"
@@ -456,7 +486,7 @@ function App() {
           <h3>BINGO DO CELLBIT</h3>
           <button id="btnTemas" className='Buttons objeto' onClick={temaPopupToggle}> <IoIosColorPalette size={"3vh"} /> </button>
           <button id='btnBingoMenu' className='Buttons objeto' onClick={bingoPopupToggle}> <FaSave size={"3vh"} /> </button>
-          <button id="btnClear" className='btnShowing objeto' onClick={ClearAplicar}> <PiBroomFill size={"3vh"} /> </button>
+          <button id="btnClear" className='btnShowing objeto' onClick={clearPopupToggle}> <PiBroomFill size={"3vh"} /> </button>
           <button id="btnHide" className='btnShowing objeto' onClick={toggleEdit}>
             {editing ?
               <IoMdCheckmark size="3vh" /> : <FaPencilAlt />}
@@ -464,18 +494,33 @@ function App() {
           <div id='toggleHeader' className='backgroundSecundario' onClick={toggleHeader}> <div id='headerArrow' className='arrowHeaderHide' style={{ height: 'fit-content' }}> <IoIosArrowUp size="2.5vh" /> </div> </div>
         </header>
         <div id="corpo">
+          <div>
+            <div id="wrap" className='bingoToMiddle'>
+              <div id='bingo' className='background'>
+              </div>
+            </div>
 
-          <div id="wrap" className='bingoToMiddle'>
-            <div id='bingo' className='background'>
+
+            {/* POPUP LIMPAR BINGO */}
+
+            <div id="PopupPlaceClear" className='PopupHide'>
+              <div className='PopupBody backgroundSecundario' style={{height: "20vh"}}>
+                <div id='PopupClear' style={{ fontSize: '2vh' }}>
+                  <h2 className='PopupH2'>Limpar celulas do bingo?</h2>
+                  <span>Isso limpara todas as celulas do bingo, alterações não salvas serão perdidas.</span>
+                  <div style={{ display: "flex", alignContent: 'center', paddingTop: '2.5vh', width: '100%', justifyContent: 'center'}}>
+                    <button className='PopupBtn objeto' onClick={() => {ClearAplicar(); clearPopupToggle()}} style={{width: "10vw", marginRight: '2vw'}}> Limpar bingo </button>
+                    <button className='PopupBtn objeto' onClick={clearPopupToggle} style={{width: "10vw"}}> Cancelar </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
 
           {/* POPUP BINGO */}
 
-
           <div id="PopupPlaceBingo" className='PopupHide'>
-
             <div className='PopupBody backgroundSecundario'>
               <div id='PopupBingo' style={{ fontSize: '2vh' }}>
                 <h2 className='PopupH2'>Salvar</h2>
@@ -491,11 +536,9 @@ function App() {
                   <div id='ListaBingos'></div>
                 </div>
               </div>
-
-
             </div>
-
           </div>
+
 
           {/* POPUP TEMA */}
 
@@ -554,13 +597,12 @@ function App() {
                   </div>
                   <div id="PopupCarregar">
                     <h2 style={{ margin: "0px" }}>Carregar</h2>
-                    <span>Escolha o tema que deseja utilizar</span>
-                    <br />
                     <span>Clique duas vezes no X para deletar.</span>
-                    <div id='ListaTemasPreset' style={{ marginTop: "1vh" }}>
+                    <div id='ListaTemasPreset'>
                       <button id='btnPresetDefault' className='presetsTemas objeto' onClick={aplicarTemaPreset}> Default </button>
+                      <button id='btnPresetRed' className='presetsTemas objeto' onClick={aplicarTemaPreset}> Vermelho </button>
                     </div>
-                    <div id='ListaTemas'></div>
+                    <div id='ListaTemas' style={{ overflowY: 'auto', height: '19vh'}}></div>
                   </div>
                 </div>
               </div>

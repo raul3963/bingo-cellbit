@@ -118,7 +118,7 @@ function App() {
       carregarTema();
     }
     if (event.target.id == "btnPresetRed") {
-      let TemaNovo = { bgColor: "#370B0B", bgHeaderColor: "#5C1F1F", txtColor: "#FFFFFF", bgObjColor: "#643738", borderObjColor: "#000000", bgObjSelColor: "#8D0000", borderObjSelColor: "#D10000" };
+      let TemaNovo = { bgColor: "#301717", bgHeaderColor: "#472020", txtColor: "#FFFFFF", bgObjColor: "#643738", borderObjColor: "#000000", bgObjSelColor: "#8D0000", borderObjSelColor: "#D10000" };
       addData("temaAtual", "", TemaNovo)
       carregarTema();
     }

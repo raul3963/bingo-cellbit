@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { getData, addData, clearData, deleteData } from './models/database/localStorage.js'
 import { useEffect } from 'react';
 import { FaBlackTie, FaPencilAlt, FaSave } from "react-icons/fa";
+import { FaShuffle } from "react-icons/fa6";
 import { IoIosArrowUp, IoIosColorPalette, IoMdArrowBack, IoMdArrowDown, IoMdCheckmark } from "react-icons/io";
 import { ChromePicker } from 'react-color';
 import { useColor } from 'react-color-palette';
@@ -176,7 +177,60 @@ function App() {
     toggleEdit("load");
   }
 
-  function aplicar(by) {
+  function ShuffleBingo() {
+    let listaDoMedo = [
+      'PSX',
+      'ENERGIA CAIU',
+      'ESQUECEU PARTE DO CORPO',
+      'VULTO NO CORREDOR',
+      'WALKING SIMULATOR',
+      'SOM_AMEDONTRADOR.MP3',
+      'ACABA COM JUMPSCARE',
+      'ESCRITA COM SANGUE',
+      'DEVE TER SIDO O VENTO',
+      'RINDO/CHORANDO.MP3',
+      'TELEFONE TOCANDO',
+      'PORTA MOVE SOZINHA',
+      'ARTE IA',
+      'CANO JUMPSCARE',
+      'ERA MELHOR NÃO TER MOSTRADO O MONSTRO',
+      'CHAVE PARA PEGAR OUTRA CHAVE',
+      'FOI TUDO POR NADA',
+      'LUZ PISCA/CAI',
+      'TROCAR FUZÍVEL',
+      'DAVA PARA TER IDO EMBORA',
+      '????????????????',
+      'DEVERIA TER CHAMADO A POLICIA',
+      'TV COM ESTÁTICA',
+      'TREMIDINHA DO KOJIMA',
+      'COELHO DA UNREAL',
+      'ESPELHO/VIDRO QUEBRA SOZINHO',
+      'JOGO FOFO QUE VIRA DE MEDO',
+      'ACABOU DO NADA',
+      'MASCOT HORROR',
+      'SOM ALTO = ASSUSTADOR',
+      'FOUND FOOTAGE',
+      'CRIATURA.PNG',
+      'JUMPSCARE DE NADA',
+      'CRUZ INVERTIDA'];
+
+    let shuffled = listaDoMedo.sort(() => 0.5 - Math.random());
+    shuffled.splice(0, (listaDoMedo.length - 16));
+    console.log(shuffled);
+    let result = '';
+    for (let index = 0; index < shuffled.length; index++) {
+      if (index == 0) {
+        result += (shuffled[index]);
+      } else {
+        result += '\n' + (shuffled[index]);
+      }
+
+    }
+    aplicar('shuffle', result);
+
+  }
+
+  function aplicar(by, shuffle) {
     let celulas = Array.from(document.getElementsByClassName("celula"))
     let textinho = "";
     for (let i in celulas) {
@@ -199,6 +253,8 @@ function App() {
       texto = loadSaveData
     } else if (by == "clear") {
       texto = '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
+    } else if (by = 'shuffle') {
+      texto = shuffle
     }
     var lines = texto.split("\n");
     addData("bingoAtual", "", texto)
@@ -216,7 +272,7 @@ function App() {
           cell.className = "celula objeto";
           cell.contentEditable = true
           cell.id = "celula" + i
-          cell.style.fontSize = "2.5vh"
+          cell.style.fontSize = "2vh"
           cell.dataset.animation = "inactive";
           cell.innerText = element.toString();
           cell.onclick = () => {
@@ -325,9 +381,30 @@ function App() {
     carregarTema();
   }
 
+  function shufflePopupToggle() {
+    let divPopupTema = document.getElementById("PopupPlaceTema")
+    let divPopupBingo = document.getElementById("PopupPlaceBingo")
+    let divPopupClear = document.getElementById("PopupPlaceClear")
+    let divPopup = document.getElementById("PopupPlaceShuffle")
+    let divBingo = document.getElementById("wrap")
+    if (divPopup.className == "PopupShow") {
+      divPopup.className = "PopupHide"
+      divBingo.className = "bingoToMiddle"
+
+    } else {
+      divPopup.className = "PopupShow"
+      divPopupTema.className = "PopupHideTema"
+      divPopupClear.className = "PopupHideTema"
+      divPopupBingo.className = "PopupHideTema"
+      divBingo.className = "bingoToSide"
+      document.getElementById("btnHide").className = "btnShowing objeto"
+    }
+  }
+
   function clearPopupToggle() {
     let divPopupTema = document.getElementById("PopupPlaceTema")
     let divPopupBingo = document.getElementById("PopupPlaceBingo")
+    let divPopupShuffle = document.getElementById("PopupPlaceShuffle")
     let divPopup = document.getElementById("PopupPlaceClear")
     let divBingo = document.getElementById("wrap")
     if (divPopup.className == "PopupShow") {
@@ -337,6 +414,7 @@ function App() {
     } else {
       divPopup.className = "PopupShow"
       divPopupTema.className = "PopupHideTema"
+      divPopupShuffle.className = "PopupHideTema"
       divPopupBingo.className = "PopupHideTema"
       divBingo.className = "bingoToSide"
       document.getElementById("btnHide").className = "btnShowing objeto"
@@ -346,6 +424,7 @@ function App() {
   function bingoPopupToggle() {
     let divPopupTema = document.getElementById("PopupPlaceTema")
     let divPopupClear = document.getElementById("PopupPlaceClear")
+    let divPopupShuffle = document.getElementById("PopupPlaceShuffle")
     let divPopup = document.getElementById("PopupPlaceBingo")
     let divBingo = document.getElementById("wrap")
     if (divPopup.className == "PopupShow") {
@@ -355,6 +434,7 @@ function App() {
     } else {
       divPopup.className = "PopupShow"
       divPopupClear.className = "PopupHideTema"
+      divPopupShuffle.className = "PopupHideTema"
       divPopupTema.className = "PopupHideTema"
       divBingo.className = "bingoToSide"
       document.getElementById("btnHide").className = "btnShowing objeto"
@@ -364,8 +444,9 @@ function App() {
 
   function temaPopupToggle() {
     let divPopupBingo = document.getElementById("PopupPlaceBingo")
-    let divPopup = document.getElementById("PopupPlaceTema")
     let divPopupClear = document.getElementById("PopupPlaceClear")
+    let divPopupShuffle = document.getElementById("PopupPlaceShuffle")
+    let divPopup = document.getElementById("PopupPlaceTema")
     let divBingo = document.getElementById("wrap")
     if (divPopup.className == "PopupShowTema") {
       divPopup.className = "PopupHideTema"
@@ -377,6 +458,7 @@ function App() {
       carregarListaTemas()
       divPopup.className = "PopupShowTema"
       divPopupBingo.className = "PopupHide"
+      divPopupShuffle.className = "PopupHideTema"
       divPopupClear.className = "PopupHideTema"
       divBingo.className = "bingoHide"
       document.getElementById("btnHide").className = "btnHiding objeto"
@@ -479,6 +561,7 @@ function App() {
     }
   }
 
+
   return (
     <div className="App">
       <div id="jogos">
@@ -486,6 +569,7 @@ function App() {
           <h3>BINGO DO CELLBIT</h3>
           <button id="btnTemas" className='Buttons objeto' onClick={temaPopupToggle}> <IoIosColorPalette size={"3vh"} /> </button>
           <button id='btnBingoMenu' className='Buttons objeto' onClick={bingoPopupToggle}> <FaSave size={"3vh"} /> </button>
+          <button id="btnShuffle" className='btnShowing objeto' onClick={shufflePopupToggle}> <FaShuffle size={"3vh"} /> </button>
           <button id="btnClear" className='btnShowing objeto' onClick={clearPopupToggle}> <PiBroomFill size={"3vh"} /> </button>
           <button id="btnHide" className='btnShowing objeto' onClick={toggleEdit}>
             {editing ?
@@ -501,16 +585,16 @@ function App() {
             </div>
 
 
-            {/* POPUP LIMPAR BINGO */}
+            {/* POPUP ALEATORIZAR BINGO */}
 
-            <div id="PopupPlaceClear" className='PopupHide'>
-              <div className='PopupBody backgroundSecundario' style={{height: "20vh"}}>
+            <div id="PopupPlaceShuffle" className='PopupHide'>
+              <div className='PopupBody backgroundSecundario' style={{ height: "20vh" }}>
                 <div id='PopupClear' style={{ fontSize: '2vh' }}>
-                  <h2 className='PopupH2'>Limpar celulas do bingo?</h2>
-                  <span>Isso limpara todas as celulas do bingo, alterações não salvas serão perdidas.</span>
-                  <div style={{ display: "flex", alignContent: 'center', paddingTop: '2.5vh', width: '100%', justifyContent: 'center'}}>
-                    <button className='PopupBtn objeto' onClick={() => {ClearAplicar(); clearPopupToggle()}} style={{width: "10vw", marginRight: '2vw'}}> Limpar bingo </button>
-                    <button className='PopupBtn objeto' onClick={clearPopupToggle} style={{width: "10vw"}}> Cancelar </button>
+                  <h2 className='PopupH2'>Aleatorizar o bingo?</h2>
+                  <span>Isso aleatorizará o bingo para uso em sextas do medo, alterações não salvas serão perdidas.</span>
+                  <div style={{ display: "flex", alignContent: 'center', paddingTop: '2.5vh', width: '100%', justifyContent: 'center' }}>
+                    <button className='PopupBtn objeto' onClick={() => { ShuffleBingo();}} style={{ width: "10vw", marginRight: '2vw' }}> Aleatorizar </button>
+                    <button className='PopupBtn objeto' onClick={shufflePopupToggle} style={{ width: "10vw" }}> Fechar </button>
                   </div>
                 </div>
               </div>
@@ -518,103 +602,119 @@ function App() {
           </div>
 
 
-          {/* POPUP BINGO */}
+          {/* POPUP LIMPAR BINGO */}
 
-          <div id="PopupPlaceBingo" className='PopupHide'>
-            <div className='PopupBody backgroundSecundario'>
-              <div id='PopupBingo' style={{ fontSize: '2vh' }}>
-                <h2 className='PopupH2'>Salvar</h2>
+          <div id="PopupPlaceClear" className='PopupHide'>
+            <div className='PopupBody backgroundSecundario' style={{ height: "20vh" }}>
+              <div id='PopupClear' style={{ fontSize: '2vh' }}>
+                <h2 className='PopupH2'>Limpar celulas do bingo?</h2>
+                <span>Isso limpara todas as celulas do bingo, alterações não salvas serão perdidas.</span>
+                <div style={{ display: "flex", alignContent: 'center', paddingTop: '2.5vh', width: '100%', justifyContent: 'center' }}>
+                  <button className='PopupBtn objeto' onClick={() => { ClearAplicar(); clearPopupToggle() }} style={{ width: "10vw", marginRight: '2vw' }}> Limpar bingo </button>
+                  <button className='PopupBtn objeto' onClick={clearPopupToggle} style={{ width: "10vw" }}> Cancelar </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        {/* POPUP BINGO */}
+
+        <div id="PopupPlaceBingo" className='PopupHide'>
+          <div className='PopupBody backgroundSecundario'>
+            <div id='PopupBingo' style={{ fontSize: '2vh' }}>
+              <h2 className='PopupH2'>Salvar</h2>
+              <div style={{ display: "flex" }}>
+                <input type='text' id='inputPopupBingo' spellCheck="false" className='PopupInput objeto' placeholder='Nome do Bingo' maxLength={40} />
+                <button id='btnPopupBingo' className='PopupBtn objeto' onClick={salvarBingo}> Salvar </button>
+              </div>
+              <div id="PopupCarregar">
+                <h2>Carregar</h2>
+                <span>Escolha o bingo que deseja carregar.</span>
+                <br />
+                <span>Clique duas vezes no X para deletar.</span>
+                <div id='ListaBingos'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        {/* POPUP TEMA */}
+
+        <div id="PopupPlaceTema" className='PopupHideTema'>
+
+          <div id="themeBody">
+            <div className='themeBodyObjects'>
+              <h3 className='themePickerName'>Fundo</h3>
+              <ChromePicker disableAlpha={true} color={colorBackground} onChange={setColorBackground} />
+            </div>
+            <div className='themeBodyObjects'>
+              <h3 className='themePickerName'>Menus e Cabeçalho</h3>
+              <ChromePicker disableAlpha={true} color={colorHeaderBackground} onChange={setColorHeaderBackground} />
+            </div>
+            <div className='themeBodyObjects'>
+              <h3 className='themePickerName'>Texto</h3>
+              <ChromePicker disableAlpha={true} color={colorText} onChange={setColorText} />
+            </div>
+            <div className='themeBodyObjects'>
+              <h3 className='themePickerName'>Cedulas, Botões e Inputs</h3>
+              <ChromePicker disableAlpha={true} color={colorBackgroundItems} onChange={setColorBackgroundItems} />
+            </div>
+            <div className='themeBodyObjects'>
+              <h3 className='themePickerName'>Bordas</h3>
+              <ChromePicker disableAlpha={true} color={colorBorderitems} onChange={setColorBorderitems} />
+            </div>
+            <div className='themeBodyObjects'>
+              <h3 className='themePickerName'>Cédulas Selecionadas</h3>
+              <ChromePicker disableAlpha={true} color={colorBackgroundItemsSel} onChange={setBackgroundItemsSel} />
+            </div>
+            <div className='themeBodyObjects'>
+              <h3 className='themePickerName'>Bordas Cedulas Selecionadas</h3>
+              <ChromePicker disableAlpha={true} color={colorBorderitemsSel} onChange={setColorBorderitemsSel} />
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: "column" }}>
+
+            <div id="previewDiv">
+              <h3 className='themePickerName' style={{ marginBottom: '2.5vh', marginTop: '3vh', fontSize: "2.25vh" }}>Preview</h3>
+              <div id="PreviewBody" style={{ backgroundColor: colorBackground.hex }}>
+                <div id="PreviewCabecalho" style={{ color: colorText.hex, backgroundColor: colorHeaderBackground.hex }}>Cabeçalho</div>
+                <div style={{ display: 'flex' }}>
+                  <div className='celulaPreview' style={{ color: colorText.hex, backgroundColor: colorBackgroundItems.hex, borderColor: colorBorderitems.hex, marginRight: '1vw' }}>Cedula comum</div>
+                  <div className='celulaPreview' style={{ color: colorText.hex, backgroundColor: colorBackgroundItemsSel.hex, borderColor: colorBorderitemsSel.hex }}>Cedula Selecionada</div>
+                </div>
+              </div>
+            </div>
+
+            <div className='PopupBodyTema backgroundSecundario'>
+              <div id='PopupTema'>
+                <button id='btnAplicarTema' className='objeto' onClick={aplicarTema}> Aplicar Tema </button>
                 <div style={{ display: "flex" }}>
-                  <input type='text' id='inputPopupBingo' spellCheck="false" className='PopupInput objeto' placeholder='Nome do Bingo' maxLength={40} />
-                  <button id='btnPopupBingo' className='PopupBtn objeto' onClick={salvarBingo}> Salvar </button>
+                  <input type='text' id='inputPopupTema' spellCheck="false" className='PopupInput objeto' placeholder='Nome do Tema' maxLength={40} />
+                  <button id='btnPopupTema' className='PopupBtn objeto' onClick={salvarTema}> Salvar </button>
                 </div>
                 <div id="PopupCarregar">
-                  <h2>Carregar</h2>
-                  <span>Escolha o bingo que deseja carregar.</span>
-                  <br />
+                  <h2 style={{ margin: "0px" }}>Carregar</h2>
                   <span>Clique duas vezes no X para deletar.</span>
-                  <div id='ListaBingos'></div>
+                  <div id='ListaTemasPreset'>
+                    <button id='btnPresetDefault' className='presetsTemas objeto' onClick={aplicarTemaPreset}> Default </button>
+                    <button id='btnPresetRed' className='presetsTemas objeto' onClick={aplicarTemaPreset}> Vermelho </button>
+                  </div>
+                  <div id='ListaTemas' style={{ overflowY: 'auto', height: '19vh' }}></div>
                 </div>
               </div>
             </div>
+
           </div>
 
-
-          {/* POPUP TEMA */}
-
-          <div id="PopupPlaceTema" className='PopupHideTema'>
-
-            <div id="themeBody">
-              <div className='themeBodyObjects'>
-                <h3 className='themePickerName'>Fundo</h3>
-                <ChromePicker disableAlpha={true} color={colorBackground} onChange={setColorBackground} />
-              </div>
-              <div className='themeBodyObjects'>
-                <h3 className='themePickerName'>Menus e Cabeçalho</h3>
-                <ChromePicker disableAlpha={true} color={colorHeaderBackground} onChange={setColorHeaderBackground} />
-              </div>
-              <div className='themeBodyObjects'>
-                <h3 className='themePickerName'>Texto</h3>
-                <ChromePicker disableAlpha={true} color={colorText} onChange={setColorText} />
-              </div>
-              <div className='themeBodyObjects'>
-                <h3 className='themePickerName'>Cedulas, Botões e Inputs</h3>
-                <ChromePicker disableAlpha={true} color={colorBackgroundItems} onChange={setColorBackgroundItems} />
-              </div>
-              <div className='themeBodyObjects'>
-                <h3 className='themePickerName'>Bordas</h3>
-                <ChromePicker disableAlpha={true} color={colorBorderitems} onChange={setColorBorderitems} />
-              </div>
-              <div className='themeBodyObjects'>
-                <h3 className='themePickerName'>Cédulas Selecionadas</h3>
-                <ChromePicker disableAlpha={true} color={colorBackgroundItemsSel} onChange={setBackgroundItemsSel} />
-              </div>
-              <div className='themeBodyObjects'>
-                <h3 className='themePickerName'>Bordas Cedulas Selecionadas</h3>
-                <ChromePicker disableAlpha={true} color={colorBorderitemsSel} onChange={setColorBorderitemsSel} />
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: "column" }}>
-
-              <div id="previewDiv">
-                <h3 className='themePickerName' style={{ marginBottom: '2.5vh', marginTop: '3vh', fontSize: "2.25vh" }}>Preview</h3>
-                <div id="PreviewBody" style={{ backgroundColor: colorBackground.hex }}>
-                  <div id="PreviewCabecalho" style={{ color: colorText.hex, backgroundColor: colorHeaderBackground.hex }}>Cabeçalho</div>
-                  <div style={{ display: 'flex' }}>
-                    <div className='celulaPreview' style={{ color: colorText.hex, backgroundColor: colorBackgroundItems.hex, borderColor: colorBorderitems.hex, marginRight: '1vw' }}>Cedula comum</div>
-                    <div className='celulaPreview' style={{ color: colorText.hex, backgroundColor: colorBackgroundItemsSel.hex, borderColor: colorBorderitemsSel.hex }}>Cedula Selecionada</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className='PopupBodyTema backgroundSecundario'>
-                <div id='PopupTema'>
-                  <button id='btnAplicarTema' className='objeto' onClick={aplicarTema}> Aplicar Tema </button>
-                  <div style={{ display: "flex" }}>
-                    <input type='text' id='inputPopupTema' spellCheck="false" className='PopupInput objeto' placeholder='Nome do Tema' maxLength={40} />
-                    <button id='btnPopupTema' className='PopupBtn objeto' onClick={salvarTema}> Salvar </button>
-                  </div>
-                  <div id="PopupCarregar">
-                    <h2 style={{ margin: "0px" }}>Carregar</h2>
-                    <span>Clique duas vezes no X para deletar.</span>
-                    <div id='ListaTemasPreset'>
-                      <button id='btnPresetDefault' className='presetsTemas objeto' onClick={aplicarTemaPreset}> Default </button>
-                      <button id='btnPresetRed' className='presetsTemas objeto' onClick={aplicarTemaPreset}> Vermelho </button>
-                    </div>
-                    <div id='ListaTemas' style={{ overflowY: 'auto', height: '19vh'}}></div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-
-          </div>
 
         </div>
-      </div >
-    </div>
+
+      </div>
+    </div >
   )
 }
 

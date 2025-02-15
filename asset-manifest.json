@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/bingo-cellbit/static/css/main.03a1f21d.css",
-    "main.js": "/bingo-cellbit/static/js/main.31edc48c.js",
+    "main.js": "/bingo-cellbit/static/js/main.f336a087.js",
     "static/js/592.cd2b8811.chunk.js": "/bingo-cellbit/static/js/592.cd2b8811.chunk.js",
     "index.html": "/bingo-cellbit/index.html",
     "main.03a1f21d.css.map": "/bingo-cellbit/static/css/main.03a1f21d.css.map",
-    "main.31edc48c.js.map": "/bingo-cellbit/static/js/main.31edc48c.js.map",
+    "main.f336a087.js.map": "/bingo-cellbit/static/js/main.f336a087.js.map",
     "592.cd2b8811.chunk.js.map": "/bingo-cellbit/static/js/592.cd2b8811.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.03a1f21d.css",
-    "static/js/main.31edc48c.js"
+    "static/js/main.f336a087.js"
   ]
 }

@@ -616,7 +616,7 @@ function App() {
                   </div>
                   <div style={{ display: "flex", alignContent: 'center', width: '100%', justifyContent: 'center', flexDirection: 'column' }}>
                     <button className='PopupBtn objeto' onClick={() => { ShuffleBingo('medo'); }} style={{ width: "25vw", marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5vh' }}> Aleatorizar Bingo do Medo </button>
-                    <span>Isso criará um novo bingo aleatorizado apra sextas do medo. Alterações não slavas serão descartadas.</span>
+                    <span>Isso criará um novo bingo aleatorizado para sextas do medo. Alterações não slavas serão descartadas.</span>
                   </div>
                 </div>
               </div>

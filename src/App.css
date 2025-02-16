@@ -504,6 +504,11 @@ html {
   color:white;
 }
 
+.objeto:hover {
+  transform: scale(1.05) perspective(1px);
+  transition: ease-in-out 50ms;
+}
+
 .selecionado {
   color:white;
 }

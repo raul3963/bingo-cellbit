@@ -177,57 +177,75 @@ function App() {
     toggleEdit("load");
   }
 
-  function ShuffleBingo() {
-    let listaDoMedo = [
-      'PSX',
-      'ENERGIA CAIU',
-      'ESQUECEU PARTE DO CORPO',
-      'VULTO NO CORREDOR',
-      'WALKING SIMULATOR',
-      'SOM_AMEDONTRADOR.MP3',
-      'ACABA COM JUMPSCARE',
-      'ESCRITA COM SANGUE',
-      'DEVE TER SIDO O VENTO',
-      'RINDO/CHORANDO.MP3',
-      'TELEFONE TOCANDO',
-      'PORTA MOVE SOZINHA',
-      'ARTE IA',
-      'CANO JUMPSCARE',
-      'ERA MELHOR NÃO TER MOSTRADO O MONSTRO',
-      'CHAVE PARA PEGAR OUTRA CHAVE',
-      'FOI TUDO POR NADA',
-      'LUZ PISCA/CAI',
-      'TROCAR FUZÍVEL',
-      'DAVA PARA TER IDO EMBORA',
-      '????????????????',
-      'DEVERIA TER CHAMADO A POLICIA',
-      'TV COM ESTÁTICA',
-      'TREMIDINHA DO KOJIMA',
-      'COELHO DA UNREAL',
-      'ESPELHO/VIDRO QUEBRA SOZINHO',
-      'JOGO FOFO QUE VIRA DE MEDO',
-      'ACABOU DO NADA',
-      'MASCOT HORROR',
-      'SOM ALTO = ASSUSTADOR',
-      'FOUND FOOTAGE',
-      'CRIATURA.PNG',
-      'JUMPSCARE DE NADA',
-      'CRUZ INVERTIDA'];
+  function ShuffleBingo(tipo) {
+    if (tipo == 'medo') {
+      let listaDoMedo = [
+        'PSX',
+        'ENERGIA CAIU',
+        'ESQUECEU PARTE DO CORPO',
+        'VULTO NO CORREDOR',
+        'WALKING SIMULATOR',
+        'SOM_AMEDONTRADOR.MP3',
+        'ACABA COM JUMPSCARE',
+        'ESCRITA COM SANGUE',
+        'DEVE TER SIDO O VENTO',
+        'RINDO/CHORANDO.MP3',
+        'TELEFONE TOCANDO',
+        'PORTA MOVE SOZINHA',
+        'ARTE IA',
+        'CANO JUMPSCARE',
+        'ERA MELHOR NÃO TER MOSTRADO O MONSTRO',
+        'CHAVE PARA PEGAR OUTRA CHAVE',
+        'FOI TUDO POR NADA',
+        'LUZ PISCA/CAI',
+        'TROCAR FUZÍVEL',
+        'DAVA PARA TER IDO EMBORA',
+        '????????????????',
+        'DEVERIA TER CHAMADO A POLICIA',
+        'TV COM ESTÁTICA',
+        'TREMIDINHA DO KOJIMA',
+        'COELHO DA UNREAL',
+        'ESPELHO/VIDRO QUEBRA SOZINHO',
+        'JOGO FOFO QUE VIRA DE MEDO',
+        'ACABOU DO NADA',
+        'MASCOT HORROR',
+        'SOM ALTO = ASSUSTADOR',
+        'FOUND FOOTAGE',
+        'CRIATURA.PNG',
+        'JUMPSCARE DE NADA',
+        'CRUZ INVERTIDA'];
 
-    let shuffled = listaDoMedo.sort(() => 0.5 - Math.random());
-    shuffled.splice(0, (listaDoMedo.length - 16));
-    console.log(shuffled);
-    let result = '';
-    for (let index = 0; index < shuffled.length; index++) {
-      if (index == 0) {
-        result += (shuffled[index]);
-      } else {
-        result += '\n' + (shuffled[index]);
+      let shuffled = listaDoMedo.sort(() => 0.5 - Math.random());
+      shuffled.splice(0, (listaDoMedo.length - 16));
+      console.log(shuffled);
+      let result = '';
+      for (let index = 0; index < shuffled.length; index++) {
+        if (index == 0) {
+          result += (shuffled[index]);
+        } else {
+          result += '\n' + (shuffled[index]);
+        }
+
       }
-
+      aplicar('shuffle', result);
+    } else if (tipo == 'shuffle') {
+      let celulas = Array.from(document.getElementsByClassName("celula"))
+      let lista = [];
+      for (let i in celulas) {
+        let item = document.getElementById("celula" + i)
+        lista.push(item.innerText)
+      }
+      let shuffled = lista.sort(() => 0.5 - Math.random());
+      let result = '';
+      for (let index = 0; index < shuffled.length; index++) {
+        if (index == 0) {
+          result += (shuffled[index]);
+        } else {
+          result += '\n' + (shuffled[index]);
+        }
+      }
+      aplicar('shuffle', result);
     }
-    aplicar('shuffle', result);
-
   }
 
   function aplicar(by, shuffle) {
@@ -588,13 +606,17 @@ function App() {
             {/* POPUP ALEATORIZAR BINGO */}
 
             <div id="PopupPlaceShuffle" className='PopupHide'>
-              <div className='PopupBody backgroundSecundario' style={{ height: "20vh" }}>
-                <div id='PopupClear' style={{ fontSize: '2vh' }}>
+              <div className='PopupBody backgroundSecundario' style={{ height: "fit-content" }}>
+                <div id='PopupClear' style={{ fontSize: '2vh', justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                   <h2 className='PopupH2'>Aleatorizar o bingo?</h2>
-                  <span>Isso aleatorizará o bingo para uso em sextas do medo, alterações não salvas serão perdidas.</span>
+                  <span>Isso aleatorizará o bingo atual.</span>
                   <div style={{ display: "flex", alignContent: 'center', paddingTop: '2.5vh', width: '100%', justifyContent: 'center' }}>
-                    <button className='PopupBtn objeto' onClick={() => { ShuffleBingo();}} style={{ width: "10vw", marginRight: '2vw' }}> Aleatorizar </button>
-                    <button className='PopupBtn objeto' onClick={shufflePopupToggle} style={{ width: "10vw" }}> Fechar </button>
+                    <button className='PopupBtn objeto' onClick={() => { ShuffleBingo('shuffle'); }} style={{ width: "11.5vw", marginRight: '2vw' }}> Aleatorizar </button>
+                    <button className='PopupBtn objeto' onClick={shufflePopupToggle} style={{ width: "11.5vw" }}> Fechar </button>
+                  </div>
+                  <div style={{ display: "flex", alignContent: 'center', width: '100%', justifyContent: 'center', flexDirection: 'column' }}>
+                    <button className='PopupBtn objeto' onClick={() => { ShuffleBingo('medo'); }} style={{ width: "25vw", marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5vh' }}> Aleatorizar Bingo do Medo </button>
+                    <span>Isso criará um novo bingo aleatorizado apra sextas do medo. Alterações não slavas serão descartadas.</span>
                   </div>
                 </div>
               </div>
@@ -605,7 +627,7 @@ function App() {
           {/* POPUP LIMPAR BINGO */}
 
           <div id="PopupPlaceClear" className='PopupHide'>
-            <div className='PopupBody backgroundSecundario' style={{ height: "20vh" }}>
+            <div className='PopupBody backgroundSecundario' style={{ height: "fit-content" }}>
               <div id='PopupClear' style={{ fontSize: '2vh' }}>
                 <h2 className='PopupH2'>Limpar celulas do bingo?</h2>
                 <span>Isso limpara todas as celulas do bingo, alterações não salvas serão perdidas.</span>
@@ -622,7 +644,7 @@ function App() {
         {/* POPUP BINGO */}
 
         <div id="PopupPlaceBingo" className='PopupHide'>
-          <div className='PopupBody backgroundSecundario'>
+          <div className='PopupBody backgroundSecundario' style={{ height: "fit-content" }}>
             <div id='PopupBingo' style={{ fontSize: '2vh' }}>
               <h2 className='PopupH2'>Salvar</h2>
               <div style={{ display: "flex" }}>

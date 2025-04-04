@@ -469,6 +469,7 @@ function App() {
     if (divPopup.className == "PopupShowTema") {
       divPopup.className = "PopupHideTema"
       divBingo.className = "bingoToMiddle"
+      document.getElementById("btnShuffle").className = "btnShowing objeto"
       document.getElementById("btnHide").className = "btnShowing objeto"
       document.getElementById("btnClear").className = "btnShowing objeto"
 
@@ -479,6 +480,7 @@ function App() {
       divPopupShuffle.className = "PopupHideTema"
       divPopupClear.className = "PopupHideTema"
       divBingo.className = "bingoHide"
+      document.getElementById("btnShuffle").className = "btnHiding objeto"
       document.getElementById("btnHide").className = "btnHiding objeto"
       document.getElementById("btnClear").className = "btnHiding objeto"
     }

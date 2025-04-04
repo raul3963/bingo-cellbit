@@ -198,10 +198,10 @@ function App() {
         'CHAVE PARA PEGAR OUTRA CHAVE',
         'FOI TUDO POR NADA',
         'LUZ PISCA/CAI',
-        'TROCAR FUZÍVEL',
-        'DAVA PARA TER IDO EMBORA',
+        'TROCAR FUSÍVEL',
+        'DAVA PARA IR EMBORA',
         '????????????????',
-        'DEVERIA TER CHAMADO A POLICIA',
+        'DAVA PARA CHAMAR A POLÍCIA',
         'TV COM ESTÁTICA',
         'TREMIDINHA DO KOJIMA',
         'COELHO DA UNREAL',
@@ -213,7 +213,8 @@ function App() {
         'FOUND FOOTAGE',
         'CRIATURA.PNG',
         'JUMPSCARE DE NADA',
-        'CRUZ INVERTIDA'];
+        'CRUZ INVERTIDA',
+        'COLETAR DETERMINADO NUMERO DE ALGO É O OBJETIVO DO JOGO'];
 
       let shuffled = listaDoMedo.sort(() => 0.5 - Math.random());
       shuffled.splice(0, (listaDoMedo.length - 16));

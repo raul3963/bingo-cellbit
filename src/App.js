@@ -192,7 +192,7 @@ function App() {
         'RINDO/CHORANDO.MP3',
         'TELEFONE TOCANDO',
         'PORTA MOVE SOZINHA',
-        'ARTE IA',
+        '"ARTE" IA',
         'CANO JUMPSCARE',
         'ERA MELHOR NÃO TER MOSTRADO O MONSTRO',
         'CHAVE PARA PEGAR OUTRA CHAVE',

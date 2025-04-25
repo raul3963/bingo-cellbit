@@ -85,7 +85,7 @@ html {
 #jogos {
   display: flex;
   flex-direction: column;
-  overflow-block: scroll;
+  overflow-block: none;
   margin-top: 1vh;
   height: 89vh;
   width: 100vw;

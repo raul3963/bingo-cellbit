@@ -14,7 +14,6 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import Popup from 'react-popup';
 
-
 function App() {
 
   const [editing, setEditing] = useState(true);
@@ -99,6 +98,10 @@ function App() {
     bingoAtual = data.bingoAtual;
     aplicar("load");
     carregarTema();
+
+    
+    let btnSMF = document.getElementById('btnSGF')
+    btnSMF.addEventListener("click", aplicarSGF)
   }, []);
 
   // TEMA
@@ -262,6 +265,7 @@ function App() {
     }
     if (textinho == "") { textinho = '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n' }
     let texto = "";
+      console.log('AAAAAAAAA')
     if (by == "load") {
       if (bingoAtual == "") {
         texto = textinho;
@@ -275,6 +279,7 @@ function App() {
     } else if (by = 'shuffle') {
       texto = shuffle
     }
+    console.log(texto)
     var lines = texto.split("\n");
     addData("bingoAtual", "", texto)
     let divBingo = document.getElementById("bingo");
@@ -351,10 +356,15 @@ function App() {
 
   }
 
+  function aplicarSGF (){
+    aplicar("shuffle", "HALF LIFE 3\nPORTAL 3\nDATA DE SILKSONG\nBLOODBORNE PC 60fps\nELDER SCROLLS 6 (Skyrim 2)\nDINO CRISIS REMAKE\nOKAMI 2\nRESIDENT EVIL 9 (ou um novo remake)\nBIOSHOCK NOVO\nCHRONO TRIGGER REMAKE\nTHE WITCHER 1 REMAKE\nBULLY 2\nTWISTED METAL\nALIEN ISOLATION 2\nJOGO DO KOJIMA COM JORDAN PEELE (OD)\nINFAMOUS")
+    toggleEdit('load')
+  }
 
   //POPUPS
 
   function carregarListaBingos() {
+
     let data = getData("BingoCellbit");
     document.getElementById("ListaBingos").innerHTML = ""
     let elements = [];
@@ -397,6 +407,7 @@ function App() {
         }
       }
     }
+
     carregarTema();
   }
 
@@ -659,7 +670,10 @@ function App() {
                 <span>Escolha o bingo que deseja carregar.</span>
                 <br />
                 <span>Clique duas vezes no X para deletar.</span>
-                <div id='ListaBingos'></div>
+                  <div className='divbtnsListaBingos' style={{display: "flex", alignItems: "center", height: "7.5vh", width: "100%"}}>
+                    <button id = "btnSGF" className = "btnListaBingoCarregar objeto" style = {{border: "1px black solid", width: "100%"}}>SUMMER GAMES</button></div>
+                <div id='ListaBingos'>
+                </div>
               </div>
             </div>
           </div>
@@ -713,7 +727,6 @@ function App() {
                 </div>
               </div>
             </div>
-
             <div className='PopupBodyTema backgroundSecundario'>
               <div id='PopupTema'>
                 <button id='btnAplicarTema' className='objeto' onClick={aplicarTema}> Aplicar Tema </button>
@@ -734,10 +747,8 @@ function App() {
             </div>
 
           </div>
-
-
         </div>
-
+        
       </div>
     </div >
   )

@@ -217,7 +217,9 @@ function App() {
         'CRIATURA.PNG',
         'JUMPSCARE DE NADA',
         'CRUZ INVERTIDA',
-        'COLETAR DETERMINADO NUMERO DE ALGO É O OBJETIVO DO JOGO'];
+        'COLETAR DETERMINADO NUMERO DE ALGO É O OBJETIVO DO JOGO',
+        '"NOSSA QUE PORRA É AQUELA? melhor eu ir dormir!"'
+      ];
 
       let shuffled = listaDoMedo.sort(() => 0.5 - Math.random());
       shuffled.splice(0, (listaDoMedo.length - 16));

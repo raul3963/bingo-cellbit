@@ -1,24 +1,28 @@
 import './App.css';
 import './index.css';
-import { useState } from 'react';
-import { getData, addData, clearData, deleteData } from './models/database/localStorage.js'
-import { useEffect } from 'react';
-import { FaBlackTie, FaPencilAlt, FaSave } from "react-icons/fa";
+import React, { useState, useEffect, useRef } from 'react';
+import { getData, addData, deleteData } from './models/database/localStorage.js'
+import { FaPencilAlt, FaSave } from "react-icons/fa";
 import { FaShuffle } from "react-icons/fa6";
-import { IoIosArrowUp, IoIosColorPalette, IoMdArrowBack, IoMdArrowDown, IoMdCheckmark } from "react-icons/io";
+import { IoIosArrowUp, IoIosColorPalette, IoMdCheckmark } from "react-icons/io";
 import { ChromePicker } from 'react-color';
 import { useColor } from 'react-color-palette';
 import { PiBroomFill } from "react-icons/pi";
+import { MdAddBox } from "react-icons/md";
 import html2canvas from "html2canvas";
-import React from 'react';
-import ReactDom from 'react-dom';
-import Popup from 'react-popup';
+
+function fisherYates(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
 
 function App() {
 
   const [editing, setEditing] = useState(true);
-
-  //DECLARAR STATE PARA OS COLOR PICKERS 
 
   const [colorBackground, setColorBackground] = useColor("#222222");
   const [colorHeaderBackground, setColorHeaderBackground] = useColor("#3a3a3a");
@@ -27,25 +31,17 @@ function App() {
   const [colorBorderitems, setColorBorderitems] = useColor("#000000");
   const [colorBackgroundItemsSel, setBackgroundItemsSel] = useColor("#c2af00");
   const [colorBorderitemsSel, setColorBorderitemsSel] = useColor("#bdbd00");
-  const [isPopupOpen, setPopupOpen] = useState(false);
 
-
-  // DECLARAR VARIAVEIS DE TEMAS SIMPLES
-
-  let bgColor = "#00000";
-  let bgHeaderColor = "#00000";
+  let bgColor = "#000000";
+  let bgHeaderColor = "#000000";
   let txtColor = "#fff";
-  let bgObjColor = "#00000";
-  let borderObjColor = "#00000";
-  let bgObjSelColor = "#00000";
-  let borderObjSelColor = "#00000";
+  let bgObjColor = "#000000";
+  let borderObjColor = "#000000";
+  let bgObjSelColor = "#000000";
+  let borderObjSelColor = "#000000";
 
-  //VARIAVEIS DO BINGO
-
-  let bingoAtual = "";
-  let loadSaveData = "";
-
-  // CARREGAR TEMA
+  const bingoAtualRef = useRef("");
+  const loadSaveDataRef = useRef("");
 
   function refreshThemeValues() {
     let data = getData("BingoCellbit");
@@ -84,69 +80,139 @@ function App() {
     for (let i = 0; i < bgSecundario.length; i++) {
       bgSecundario[i].style.backgroundColor = bgHeaderColor;
     }
+  }
 
-    let pickers = document.getElementsByClassName('chrome-picker');
-    for (let i = 0; i < pickers.length; i++) {
-      pickers[i].style.backgroundColor = bgHeaderColor + " !important";
+  function aplicar(by, shuffle, noSave) {
+    let celulas = Array.from(document.getElementsByClassName("celula"))
+    let textinho = "";
+    for (let i in celulas) {
+      let item = document.getElementById("celula" + i)
+      if (i == 15) {
+        textinho += item.innerText
+      } else if (i <= 14) {
+        textinho += item.innerText + "\n"
+      }
+    }
+    if (textinho === "") { textinho = '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n' }
+    let texto = "";
+    if (by === "load") {
+      if (bingoAtualRef.current === "") {
+        texto = textinho;
+      } else { texto = bingoAtualRef.current; }
+    } else if (by === "apply") {
+      texto = textinho;
+    } else if (by === "loadSave") {
+      texto = loadSaveDataRef.current
+    } else if (by === "clear") {
+      texto = '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
+    } else if (by === 'shuffle') {
+      texto = shuffle
+    }
+    var lines = texto.split("\n");
+    if (!noSave) {
+      addData("bingoAtual", "", texto)
+    }
+    let divBingo = document.getElementById("bingo");
+
+    let count = lines.length
+    divBingo.innerHTML = "";
+
+    if (texto !== "") {
+      if (count <= 16) {
+        divBingo.innerHTML = "";
+        let i = 0;
+        lines.forEach(element => {
+          let cell = document.createElement("div");
+          cell.className = "celula objeto";
+          cell.contentEditable = true
+          cell.id = "celula" + i
+          cell.style.fontSize = "2vh"
+          cell.dataset.animation = "inactive";
+          cell.innerText = element.toString();
+          cell.onclick = () => {
+            document.getElementById(cell.id).focus();
+          }
+          divBingo.appendChild(cell);
+          i += 1;
+        }
+        );
+      }
+      carregarTema();
+    } else {
+      divBingo.innerHTML = "";
     }
   }
 
-  //CARREGAR DADOS DURANTE O LOADING
+  function novoBingo() {
+    // cria quadro vazio sem persistir — só salva se o usuário clicar em Salvar
+    const texto = '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n';
+    const lines = texto.split("\n");
+    const divBingo = document.getElementById("bingo");
+    divBingo.innerHTML = "";
+    lines.forEach((element, i) => {
+      let cell = document.createElement("div");
+      cell.className = "celula objeto";
+      cell.contentEditable = true;
+      cell.id = "celula" + i;
+      cell.style.fontSize = "2vh";
+      cell.dataset.animation = "inactive";
+      cell.innerText = element;
+      cell.onclick = () => { document.getElementById(cell.id).focus(); };
+      divBingo.appendChild(cell);
+    });
+    setEditing(true);
+    carregarTema();
+  }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     let data = getData("BingoCellbit");
-    bingoAtual = data.bingoAtual;
+    bingoAtualRef.current = data.bingoAtual;
     aplicar("load");
     carregarTema();
 
-    
-    let btnSMF = document.getElementById('btnSGF')
+    const btnSMF = document.getElementById('btnSGF')
     btnSMF.addEventListener("click", aplicarSGF)
+    return () => btnSMF.removeEventListener("click", aplicarSGF)
   }, []);
 
-  // TEMA
-
   function aplicarTema() {
-    let data = getData("BingoCellbit");
     let TemaNovo = { bgColor: colorBackground.hex, bgHeaderColor: colorHeaderBackground.hex, txtColor: colorText.hex, bgObjColor: colorBackgroundItems.hex, borderObjColor: colorBorderitems.hex, bgObjSelColor: colorBackgroundItemsSel.hex, borderObjSelColor: colorBorderitemsSel.hex };
     addData("temaAtual", "", TemaNovo)
     carregarTema();
-
   }
 
   function aplicarTemaPreset(event) {
-    if (event.target.id == "btnPresetDefault") {
+    if (event.target.id === "btnPresetDefault") {
       let TemaNovo = { bgColor: "#222222", bgHeaderColor: "#3A3A3A", txtColor: "#FFFFFF", bgObjColor: "#535353", borderObjColor: "#000000", bgObjSelColor: "#C2AF00", borderObjSelColor: "#BDBD00" };
       addData("temaAtual", "", TemaNovo)
       carregarTema();
     }
-    if (event.target.id == "btnPresetRed") {
+    if (event.target.id === "btnPresetRed") {
       let TemaNovo = { bgColor: "#301717", bgHeaderColor: "#472020", txtColor: "#FFFFFF", bgObjColor: "#643738", borderObjColor: "#000000", bgObjSelColor: "#8D0000", borderObjSelColor: "#D10000" };
       addData("temaAtual", "", TemaNovo)
       carregarTema();
     }
   }
 
-  function carregarListaTemas() {
-    let data = getData("BingoCellbit");
-    document.getElementById("ListaTemas").innerHTML = ""
-    let elements = [];
-    for (let i in data.temaSalvo) {
+  function carregarLista(containerId, dataMap, onLoad, onDelete) {
+    refreshThemeValues();
+    const container = document.getElementById(containerId);
+    container.innerHTML = "";
+    for (let i in dataMap) {
       let divbtns = document.createElement("div");
       divbtns.className = "divbtnsListaBingos";
       divbtns.style.display = "flex";
       divbtns.style.alignItems = "center";
       divbtns.style.height = "7.5vh";
+
       let buttonLista = document.createElement("button");
       buttonLista.innerHTML = i;
       buttonLista.className = "btnListaBingoCarregar objeto";
-      buttonLista.style.border = "1px black solid"
-      buttonLista.onclick = () => {
-        let value = String(data.temaSalvo[i]).replace("undefined", '')
-        addData("temaAtual", "", JSON.parse(value))
-        carregarTema();
-      }
+      buttonLista.style.border = "1px black solid";
+      buttonLista.onclick = () => onLoad(i);
       divbtns.append(buttonLista);
+
       let btnDelete = document.createElement("button");
       btnDelete.innerHTML = "X";
       btnDelete.style.backgroundColor = "brown";
@@ -158,22 +224,26 @@ function App() {
       btnDelete.style.fontSize = "2vh";
       btnDelete.style.marginLeft = "0vw";
       btnDelete.style.color = txtColor;
-      btnDelete.ondblclick = () => {
-        apagarTema(i)
-      }
-      divbtns.append(btnDelete)
-      elements.push(divbtns);
-      if (document.getElementById("ListaTemas").children.length <= elements.length) {
-        for (var x = 0; x < elements.length; ++x) {
-          document.getElementById("ListaTemas").appendChild(elements[x]);
-        }
-      }
+      btnDelete.ondblclick = () => onDelete(i);
+      divbtns.append(btnDelete);
+
+      container.appendChild(divbtns);
     }
     carregarTema();
   }
 
-
-  //APLICAR EDIÇÃO
+  function carregarListaTemas() {
+    const data = getData("BingoCellbit");
+    carregarLista(
+      "ListaTemas",
+      data.temaSalvo,
+      (i) => {
+        addData("temaAtual", "", JSON.parse(data.temaSalvo[i]));
+        carregarTema();
+      },
+      (i) => apagarTema(i)
+    );
+  }
 
   function ClearAplicar() {
     aplicar("clear");
@@ -181,7 +251,7 @@ function App() {
   }
 
   function ShuffleBingo(tipo) {
-    if (tipo == 'medo') {
+    if (tipo === 'medo') {
       let listaDoMedo = [
         'PSX',
         'ENERGIA CAIU',
@@ -221,101 +291,15 @@ function App() {
         '"NOSSA QUE PORRA É AQUELA? melhor eu ir dormir!"'
       ];
 
-      let shuffled = listaDoMedo.sort(() => 0.5 - Math.random());
-      shuffled.splice(0, (listaDoMedo.length - 16));
-      console.log(shuffled);
-      let result = '';
-      for (let index = 0; index < shuffled.length; index++) {
-        if (index == 0) {
-          result += (shuffled[index]);
-        } else {
-          result += '\n' + (shuffled[index]);
-        }
-
-      }
-      aplicar('shuffle', result);
-    } else if (tipo == 'shuffle') {
+      const shuffled = fisherYates(listaDoMedo).slice(0, 16);
+      aplicar('shuffle', shuffled.join('\n'));
+    } else if (tipo === 'shuffle') {
       let celulas = Array.from(document.getElementsByClassName("celula"))
-      let lista = [];
-      for (let i in celulas) {
-        let item = document.getElementById("celula" + i)
-        lista.push(item.innerText)
-      }
-      let shuffled = lista.sort(() => 0.5 - Math.random());
-      let result = '';
-      for (let index = 0; index < shuffled.length; index++) {
-        if (index == 0) {
-          result += (shuffled[index]);
-        } else {
-          result += '\n' + (shuffled[index]);
-        }
-      }
-      aplicar('shuffle', result);
+      let lista = celulas.map((_, i) => document.getElementById("celula" + i).innerText);
+      const shuffled = fisherYates(lista);
+      aplicar('shuffle', shuffled.join('\n'));
     }
   }
-
-  function aplicar(by, shuffle) {
-    let celulas = Array.from(document.getElementsByClassName("celula"))
-    let textinho = "";
-    for (let i in celulas) {
-      let item = document.getElementById("celula" + i)
-      if (i == 15) {
-        textinho += item.innerText
-      } else if (i <= 14) {
-        textinho += item.innerText + "\n"
-      }
-    }
-    if (textinho == "") { textinho = '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n' }
-    let texto = "";
-      console.log('AAAAAAAAA')
-    if (by == "load") {
-      if (bingoAtual == "") {
-        texto = textinho;
-      } else { texto = bingoAtual; }
-    } else if (by == "apply") {
-      texto = textinho;
-    } else if (by == "loadSave") {
-      texto = loadSaveData
-    } else if (by == "clear") {
-      texto = '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n'
-    } else if (by = 'shuffle') {
-      texto = shuffle
-    }
-    console.log(texto)
-    var lines = texto.split("\n");
-    addData("bingoAtual", "", texto)
-    let divBingo = document.getElementById("bingo");
-
-    let count = lines.length
-    divBingo.innerHTML = "";
-
-    if (texto != "") {
-      if (count <= 16) {
-        divBingo.innerHTML = "";
-        let i = 0;
-        lines.forEach(element => {
-          let cell = document.createElement("div");
-          cell.className = "celula objeto";
-          cell.contentEditable = true
-          cell.id = "celula" + i
-          cell.style.fontSize = "2vh"
-          cell.dataset.animation = "inactive";
-          cell.innerText = element.toString();
-          cell.onclick = () => {
-            document.getElementById(cell.id).focus();
-          }
-          divBingo.appendChild(cell);
-          i += 1;
-        }
-        );
-      }
-      carregarTema();
-    } else {
-      divBingo.innerHTML = "";
-    }
-  }
-
-  //FUNÇÕES DA DB
 
   function apagarBingo(id) {
     deleteData("bingo", id)
@@ -336,10 +320,9 @@ function App() {
       }
     }
     addData("bingoSalvo", nome, bingo);
+    addData("bingoAtual", "", bingo);
     inputPopup.value = ""
-
     carregarListaBingos();
-
   }
 
   function apagarTema(id) {
@@ -355,62 +338,25 @@ function App() {
     addData("temaAtual", "", TemaNovo);
     inputTema.value = ""
     carregarListaTemas();
-
   }
 
-  function aplicarSGF (){
+  function aplicarSGF() {
     aplicar("shuffle", "HALF LIFE 3\nPORTAL 3\nDATA DE SILKSONG\nBLOODBORNE PC 60fps\nELDER SCROLLS 6 (Skyrim 2)\nDINO CRISIS REMAKE\nOKAMI 2\nRESIDENT EVIL 9 (ou um novo remake)\nBIOSHOCK NOVO\nCHRONO TRIGGER REMAKE\nTHE WITCHER 1 REMAKE\nBULLY 2\nTWISTED METAL\nALIEN ISOLATION 2\nJOGO DO KOJIMA COM JORDAN PEELE (OD)\nINFAMOUS")
     toggleEdit('load')
   }
 
-  //POPUPS
-
   function carregarListaBingos() {
-
-    let data = getData("BingoCellbit");
-    document.getElementById("ListaBingos").innerHTML = ""
-    let elements = [];
-    for (let i in data.bingoSalvo) {
-      let divbtns = document.createElement("div");
-      divbtns.className = "divbtnsListaBingos";
-      divbtns.style.display = "flex";
-      divbtns.style.alignItems = "center";
-      divbtns.style.height = "7.5vh";
-      let buttonLista = document.createElement("button");
-      buttonLista.innerHTML = i;
-      buttonLista.className = "btnListaBingoCarregar objeto";
-      buttonLista.style.border = "1px black solid"
-      buttonLista.onclick = () => {
-        let value = String(data.bingoSalvo[i]).replace("undefined", '')
-        loadSaveData = value;
+    const data = getData("BingoCellbit");
+    carregarLista(
+      "ListaBingos",
+      data.bingoSalvo,
+      (i) => {
+        loadSaveDataRef.current = String(data.bingoSalvo[i]);
         aplicar("loadSave");
-        toggleEdit("load")
-      }
-      divbtns.append(buttonLista);
-      let btnDelete = document.createElement("button");
-      btnDelete.innerHTML = "X";
-      btnDelete.style.backgroundColor = "brown";
-      btnDelete.style.border = "10vw red";
-      btnDelete.style.borderRadius = "1vh";
-      btnDelete.style.height = "5vh";
-      btnDelete.style.width = "3vw";
-      btnDelete.style.padding = "0px";
-      btnDelete.style.fontSize = "2vh";
-      btnDelete.style.marginLeft = "0vw";
-      btnDelete.style.color = txtColor;
-      btnDelete.ondblclick = () => {
-        apagarBingo(i)
-      }
-      divbtns.append(btnDelete)
-      elements.push(divbtns);
-      if (document.getElementById("ListaBingos").children.length <= elements.length) {
-        for (var x = 0; x < elements.length; ++x) {
-          document.getElementById("ListaBingos").appendChild(elements[x]);
-        }
-      }
-    }
-
-    carregarTema();
+        toggleEdit("load");
+      },
+      (i) => apagarBingo(i)
+    );
   }
 
   function shufflePopupToggle() {
@@ -419,10 +365,9 @@ function App() {
     let divPopupClear = document.getElementById("PopupPlaceClear")
     let divPopup = document.getElementById("PopupPlaceShuffle")
     let divBingo = document.getElementById("wrap")
-    if (divPopup.className == "PopupShow") {
+    if (divPopup.className === "PopupShow") {
       divPopup.className = "PopupHide"
       divBingo.className = "bingoToMiddle"
-
     } else {
       divPopup.className = "PopupShow"
       divPopupTema.className = "PopupHideTema"
@@ -439,10 +384,9 @@ function App() {
     let divPopupShuffle = document.getElementById("PopupPlaceShuffle")
     let divPopup = document.getElementById("PopupPlaceClear")
     let divBingo = document.getElementById("wrap")
-    if (divPopup.className == "PopupShow") {
+    if (divPopup.className === "PopupShow") {
       divPopup.className = "PopupHide"
       divBingo.className = "bingoToMiddle"
-
     } else {
       divPopup.className = "PopupShow"
       divPopupTema.className = "PopupHideTema"
@@ -459,10 +403,9 @@ function App() {
     let divPopupShuffle = document.getElementById("PopupPlaceShuffle")
     let divPopup = document.getElementById("PopupPlaceBingo")
     let divBingo = document.getElementById("wrap")
-    if (divPopup.className == "PopupShow") {
+    if (divPopup.className === "PopupShow") {
       divPopup.className = "PopupHide"
       divBingo.className = "bingoToMiddle"
-
     } else {
       divPopup.className = "PopupShow"
       divPopupClear.className = "PopupHideTema"
@@ -480,13 +423,12 @@ function App() {
     let divPopupShuffle = document.getElementById("PopupPlaceShuffle")
     let divPopup = document.getElementById("PopupPlaceTema")
     let divBingo = document.getElementById("wrap")
-    if (divPopup.className == "PopupShowTema") {
+    if (divPopup.className === "PopupShowTema") {
       divPopup.className = "PopupHideTema"
       divBingo.className = "bingoToMiddle"
       document.getElementById("btnShuffle").className = "btnShowing objeto"
       document.getElementById("btnHide").className = "btnShowing objeto"
       document.getElementById("btnClear").className = "btnShowing objeto"
-
     } else {
       carregarListaTemas()
       divPopup.className = "PopupShowTema"
@@ -500,11 +442,9 @@ function App() {
     }
   }
 
-  //TOGGLE EDIT E HEADER
-
   function toggleEdit(toggle) {
     let editable_elements = Array.from(document.getElementsByClassName("celula"));
-    if (toggle == "load") {
+    if (toggle === "load") {
       setEditing(true);
       for (let e in editable_elements) {
         let celula = document.getElementById("celula" + e)
@@ -517,58 +457,50 @@ function App() {
         celula.dataset.animation = "inactive";
       }
     } else {
-      if (editing == true) {
+      if (editing === true) {
         aplicar("apply");
         setEditing(false);
+        // eslint-disable-next-line no-loop-func
         for (let e in editable_elements) {
           let celula = document.getElementById("celula" + e)
-          celula.onclick = () => {
-            celula.dataset.animation = "active";
-            setTimeout(
-              function () {
-                celula.dataset.animation = "inactive"
-              }, 500
-            )
-            refreshThemeValues();
-            if (celula.className == "celula selecionado") {
-              celula.className = "celula objeto"
-              celula.style.backgroundColor = bgObjColor;
-              celula.style.borderColor = borderObjColor;
-              celula.style.color = txtColor;
-            } else if (celula.className == "celula objeto") {
-              celula.className = "celula selecionado"
+          celula.onclick = (() => {
+            const el = celula;
+            return () => {
+              el.dataset.animation = "active";
+              setTimeout(() => { el.dataset.animation = "inactive" }, 500);
+              refreshThemeValues();
+              if (el.className === "celula selecionado") {
+                el.className = "celula objeto"
+                el.style.backgroundColor = bgObjColor;
+                el.style.borderColor = borderObjColor;
+                el.style.color = txtColor;
+              } else if (el.className === "celula objeto") {
+                el.className = "celula selecionado"
+                el.style.backgroundColor = bgObjSelColor;
+                el.style.borderColor = borderObjSelColor;
+                el.style.color = txtColor;
+              }
+              if (document.getElementById("canvaOverlay") !== null) {
+                document.getElementById("canvaOverlay").remove();
+              }
+              html2canvas(document.getElementById("bingo")).then(canvas => {
+                canvas.id = "canvaOverlay"
+                canvas.style.visibility = "hidden"
+                document.body.appendChild(canvas)
 
-              celula.style.backgroundColor = bgColor;
-              celula.style.backgroundColor = bgObjSelColor;
-              celula.style.borderColor = borderObjSelColor;
-              celula.style.color = txtColor;
-            }
-            if (document.getElementById("canvaOverlay") != null) {
-              document.getElementById("canvaOverlay").remove();
-            }
-            html2canvas(document.getElementById("bingo")).then(canvas => {
-              canvas.id = "canvaOverlay"
-              canvas.style.visibility = "hidden"
-              document.body.appendChild(canvas)
-
-              if (window.location.hash == "#mods") {
-                console.log(window.location.hash)
-                let idCanva = "canvaOverlay";
-                let link = document.getElementById("canvasA");
-
-                if (link == null) {
-                  link = document.createElement('a');
-                  link.id = "canvasA";
-                }
-
-                link.download = 'Bingo.png';
-                link.href = document.getElementById(idCanva).toDataURL("image/jpeg", 1);
-                link.click();
-              };
-            });
-
-
-          }
+                if (window.location.hash === "#mods") {
+                  let link = document.getElementById("canvasA");
+                  if (link === null) {
+                    link = document.createElement('a');
+                    link.id = "canvasA";
+                  }
+                  link.download = 'Bingo.png';
+                  link.href = document.getElementById("canvaOverlay").toDataURL("image/jpeg", 1);
+                  link.click();
+                };
+              });
+            };
+          })();
           celula.contentEditable = false
           celula.style.userSelect = "none";
         }
@@ -586,7 +518,7 @@ function App() {
   function toggleHeader() {
     let header = document.getElementById("Appheader")
     let headerArrow = document.getElementById("headerArrow")
-    if (header.className == "backgroundSecundario headerShow") {
+    if (header.className === "backgroundSecundario headerShow") {
       header.className = "backgroundSecundario headerHide";
       headerArrow.className = "arrowHeaderShow";
     } else {
@@ -603,6 +535,7 @@ function App() {
           <h3>BINGO DO CELLBIT</h3>
           <button id="btnTemas" className='Buttons objeto' onClick={temaPopupToggle}> <IoIosColorPalette size={"3vh"} /> </button>
           <button id='btnBingoMenu' className='Buttons objeto' onClick={bingoPopupToggle}> <FaSave size={"3vh"} /> </button>
+          <button id="btnNovo" className='Buttons objeto' onClick={novoBingo}> <MdAddBox size={"3vh"} /> </button>
           <button id="btnShuffle" className='btnShowing objeto' onClick={shufflePopupToggle}> <FaShuffle size={"3vh"} /> </button>
           <button id="btnClear" className='btnShowing objeto' onClick={clearPopupToggle}> <PiBroomFill size={"3vh"} /> </button>
           <button id="btnHide" className='btnShowing objeto' onClick={toggleEdit}>
@@ -632,7 +565,7 @@ function App() {
                   </div>
                   <div style={{ display: "flex", alignContent: 'center', width: '100%', justifyContent: 'center', flexDirection: 'column' }}>
                     <button className='PopupBtn objeto' onClick={() => { ShuffleBingo('medo'); }} style={{ width: "25vw", marginLeft: 'auto', marginRight: 'auto', marginBottom: '0.5vh' }}> Aleatorizar Bingo do Medo </button>
-                    <span>Isso criará um novo bingo aleatorizado para sextas do medo. Alterações não slavas serão descartadas.</span>
+                    <span>Isso criará um novo bingo aleatorizado para sextas do medo. Alterações não salvas serão descartadas.</span>
                   </div>
                 </div>
               </div>
@@ -750,7 +683,7 @@ function App() {
 
           </div>
         </div>
-        
+
       </div>
     </div >
   )
